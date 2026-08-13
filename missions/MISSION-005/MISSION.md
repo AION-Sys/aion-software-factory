@@ -9,12 +9,37 @@ priority: P1
 
 # MISSION-005 — Data Axle Verification Pilot (PLAN)
 
-> **This mission produces the bounded-pilot PLAN only — not an API integration.**
-> No provider connection, no credentials, no data acquisition, and no spend occur
-> under this mission. Execution is a separate step that begins only after the CEO
-> authorizes the parameters below and legal signs off.
->
-> **Final status: `READY FOR CEO PILOT AUTHORIZATION`.**
+> **Parameters ratified by the CEO (2026-08-13). AION preparation complete.**
+> No provider connection, no credentials, no data acquisition, and no spend have
+> occurred. **Current status: `NOT CLEARED TO EXECUTE` — 7 items across gates 1–6 & 8
+> require CEO / legal / procurement action (see `GATE-STATUS.md`).**
+
+## Ratified parameters (CEO, 2026-08-13)
+| Parameter | Value |
+|-----------|-------|
+| Provider | Data Axle |
+| Market | Denver–Aurora–Lakewood, Colorado (one metro) |
+| Max records | **500** |
+| Hard spend cap | **$100 USD** absolute not-to-exceed |
+| Human ground-truth sample | 100 records |
+| Retention | ≤30 days (or shorter per license); longer needs CEO + legal review |
+| Storage | Encrypted, access-controlled, **non-repository** only |
+| Credentials | Secret manager only; never committed |
+
+Out of scope (ratified): no cold outreach, email, SMS, calling, CRM, automated sales,
+production deployment, resale/redistribution, market expansion, >500 records, or
+additional provider purchases.
+
+## Preparation completed by AION (this turn, GREEN only)
+- Built `DataAxleProvider` adapter — **disabled by default**, technically enforcing the
+  500-record and $100 caps and the Denver-only market guard; credentials from secret
+  manager/env only; **no live-call path reachable** (gate 7 prep, gates 9 & 10).
+- AION-SECURITY review of the adapter → `SECURITY-REVIEW-ADAPTER.md` (gate 7).
+- Froze the measurement baseline before acquisition → `MEASUREMENT-BASELINE.md` (gate 11),
+  incl. the precise **cost-per-usable-qualified-opportunity** definition.
+- Confirmed synthetic regression + adapter tests pass — **60 tests green** (gate 12).
+- Verification packet for the human/legal gates → `PRE-EXECUTION-VERIFICATION.md`.
+- Gate tracker → `GATE-STATUS.md`; controlled `EXECUTION-RUNBOOK.md`.
 
 ## Purpose
 Prove — with a small amount of **real** Data Axle data — whether real
@@ -67,7 +92,13 @@ adapter implementing the existing `ResearchProvider` seam.
 | `DATA-HANDLING-PLAN.md` | Storage, PII rules, retention/deletion, security, legal items |
 | `DECISION-FRAMEWORK.md` | APPROVE / REJECT / ITERATE criteria for the CEO gate |
 | `APPROVALS.md` | Exact CEO approvals + legal sign-off required before execution |
+| `GATE-STATUS.md` | Live status of the 12 pre-execution gates |
+| `PRE-EXECUTION-VERIFICATION.md` | Verification packet for the human/legal gates (1–6, 8) |
+| `MEASUREMENT-BASELINE.md` | FROZEN baseline: metric defs, thresholds, config pin (gate 11) |
+| `SECURITY-REVIEW-ADAPTER.md` | AION-SECURITY review of the adapter (gate 7) |
+| `EXECUTION-RUNBOOK.md` | Controlled run procedure — only after all gates pass |
 | `HANDOFF.md` | Handoff to the CEO authorization gate |
+| adapter | `products/lead-intel/leadintel/providers/dataaxle.py` (+ tests) |
 
 ## Gate
 Real-data acquisition is a **YELLOW gate** (see
@@ -77,3 +108,9 @@ nothing; it prepares the authorization decision.
 ## Log
 - 2026-08-13 — Mission created from CEO decision (Data Axle selected for a bounded
   verification pilot). Pilot plan authored. Status: READY FOR CEO PILOT AUTHORIZATION.
+- 2026-08-13 — CEO ratified pilot parameters (500 records, $100 cap, Denver metro,
+  30-day retention, secret-manager credentials). AION completed GREEN preparation:
+  disabled cap-enforcing adapter + security review, frozen baseline, 60 tests green,
+  gate tracker + verification packet + runbook. **Did not execute.** Gates 1–6 & 8
+  (quote, ToS/licensing/retention/PII confirmation, legal sign-off, credentials)
+  require CEO/legal/procurement. Status: NOT CLEARED TO EXECUTE.

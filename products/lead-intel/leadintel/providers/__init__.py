@@ -5,5 +5,9 @@
 """
 from .base import ResearchProvider, RawBusiness
 from .fixture import FixtureProvider
+from .dataaxle import DataAxleProvider, DataAxleGateError
 
-__all__ = ["ResearchProvider", "RawBusiness", "FixtureProvider"]
+__all__ = [
+    "ResearchProvider", "RawBusiness", "FixtureProvider",
+    "DataAxleProvider", "DataAxleGateError",
+]
