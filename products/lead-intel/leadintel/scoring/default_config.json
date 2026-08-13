@@ -1,0 +1,53 @@
+{
+  "version": "1.0.0",
+  "description": "Default electrical-contractor qualification model. Explicit, configurable, explainable. Tune here, not in code. Weights and thresholds are calibrated for GOVERNANCE and TESTING on SYNTHETIC data; recalibrate against real data once a live provider is approved (MISSION-003).",
+  "thresholds": {
+    "qualified": 60,
+    "review": 40
+  },
+  "category_keywords": {
+    "core_electrical": [
+      "electrical contractor", "electrical contractors", "electrician",
+      "electricians", "electrical service", "electrical services",
+      "commercial electrical", "residential electrical", "industrial electrical",
+      "electrical subcontractor", "master electrician", "electrical company",
+      "electrical installation", "electric company", "electric co"
+    ],
+    "adjacent": [
+      "solar", "photovoltaic", "lighting", "ev charger", "ev charging",
+      "generator", "battery storage", "low voltage", "security systems"
+    ],
+    "supporting_indicators": [
+      "panel upgrade", "panel", "wiring", "rewiring", "circuit",
+      "electrical panel", "breaker", "load center", "service upgrade"
+    ],
+    "exclusion_trades": [
+      "handyman", "handyperson", "home repair", "plumber", "plumbing",
+      "hvac", "heating and cooling", "air conditioning", "roofing", "roofer",
+      "landscaping", "painting", "painter", "general contractor",
+      "remodeling", "remodeler", "flooring", "drywall", "carpentry", "pest control"
+    ]
+  },
+  "positive_signals": {
+    "core_electrical_category": {"points": 30, "reason": "Business is categorized as an electrical contractor/electrician."},
+    "commercial_electrical": {"points": 10, "reason": "Offers commercial/industrial electrical services (higher-value work)."},
+    "established_website": {"points": 10, "reason": "Has an established website."},
+    "service_area_match_full": {"points": 10, "reason": "Located in the target service area."},
+    "service_area_match_partial": {"points": 6, "reason": "Partially matches the target service area."},
+    "contactable": {"points": 10, "reason": "At least one contact channel is available."},
+    "business_maturity": {"points": 15, "reason": "Size signals indicate an established business."},
+    "decision_maker_identified": {"points": 10, "reason": "A decision-maker is legitimately available."},
+    "relevant_indicators": {"points": 5, "reason": "Mentions relevant electrical work (panel/wiring/etc.)."}
+  },
+  "negative_signals": {
+    "non_electrical_trade": {"points": -40, "reason": "Primary trade is non-electrical (e.g., handyman/plumber/HVAC/general contractor) with no electrical specialization."},
+    "adjacent_only": {"points": -10, "reason": "Only adjacent services (e.g., solar/lighting) with no confirmed electrical-contractor category."},
+    "insufficient_evidence": {"points": -15, "reason": "Insufficient evidence: no website, no contact channel, and no size signals."},
+    "ambiguous_no_evidence": {"points": -20, "reason": "Ambiguous business with no electrical evidence."}
+  },
+  "maturity_scale": {
+    "employees": {"high": 50, "medium": 15},
+    "review_count": {"high": 150, "medium": 40},
+    "years_in_business": {"high": 15, "medium": 5}
+  }
+}

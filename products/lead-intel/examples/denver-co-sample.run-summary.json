@@ -1,31 +1,32 @@
 {
   "query": {
     "market": "electrical contractors",
-    "location": "Austin, TX",
+    "location": "Denver, CO",
     "limit": null
   },
   "provider": "fixture",
   "is_synthetic": true,
   "scoring_config_version": "1.0.0",
-  "total_leads": 7,
+  "total_leads": 22,
   "by_status": {
     "NEW": 0,
-    "QUALIFIED": 5,
-    "NEEDS_REVIEW": 1,
-    "DISQUALIFIED": 1
+    "QUALIFIED": 11,
+    "NEEDS_REVIEW": 2,
+    "DISQUALIFIED": 9
   },
   "by_category": {
-    "ELECTRICAL": 6,
-    "NON_ELECTRICAL": 1
+    "ELECTRICAL": 13,
+    "ADJACENT": 1,
+    "NON_ELECTRICAL": 8
   },
-  "average_score": 68.1,
-  "average_data_completeness": 0.898,
+  "average_score": 45.3,
+  "average_data_completeness": 0.857,
   "provenance_complete_rate": 1.0,
-  "duration_ms": 4,
+  "duration_ms": 10,
   "files": {
-    "jsonl": "examples/austin-tx-sample.jsonl",
-    "json": "examples/austin-tx-sample.json",
-    "csv": "examples/austin-tx-sample.csv"
+    "jsonl": "examples/denver-co-sample.jsonl",
+    "json": "examples/denver-co-sample.json",
+    "csv": "examples/denver-co-sample.csv"
   },
   "generated_at": "2026-08-13T06:07:38+00:00",
   "_disclaimer": "SYNTHETIC run — results are from fixture data and are NOT real-world evidence."

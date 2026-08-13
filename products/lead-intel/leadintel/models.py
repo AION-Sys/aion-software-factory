@@ -1,7 +1,9 @@
 """Canonical data models for the lead-intelligence pipeline.
 
-Design rule (AC-2, AC-6): absence is represented explicitly (None / empty list).
-Nothing here fabricates data — enrichment only maps what a provider supplies.
+Design rules:
+- Absence is represented explicitly (None / empty). Nothing here fabricates data.
+- Synthetic data is labeled end-to-end (`is_synthetic`) and never treated as
+  real-world evidence (MISSION-003).
 """
 from __future__ import annotations
 
@@ -14,9 +16,9 @@ from typing import Optional
 class Status(str, Enum):
     """Lifecycle/qualification status of a lead."""
     NEW = "NEW"                    # pre-scoring
-    QUALIFIED = "QUALIFIED"        # score >= QUALIFY_THRESHOLD
-    NEEDS_REVIEW = "NEEDS_REVIEW"  # REVIEW_THRESHOLD <= score < QUALIFY_THRESHOLD
-    DISQUALIFIED = "DISQUALIFIED"  # score < REVIEW_THRESHOLD
+    QUALIFIED = "QUALIFIED"        # electrical + score >= qualified threshold
+    NEEDS_REVIEW = "NEEDS_REVIEW"  # review threshold <= score < qualified, or capped
+    DISQUALIFIED = "DISQUALIFIED"  # below review threshold, or category-gated out
 
 
 class Opportunity(str, Enum):
@@ -25,6 +27,14 @@ class Opportunity(str, Enum):
     LOW = "LOW"
     MEDIUM = "MEDIUM"
     HIGH = "HIGH"
+
+
+class CategoryVerdict(str, Enum):
+    """Result of category validation — the qualification gate (MISSION-003)."""
+    ELECTRICAL = "ELECTRICAL"          # confirmed electrical specialization
+    ADJACENT = "ADJACENT"              # related (solar/lighting) but no core electrical
+    NON_ELECTRICAL = "NON_ELECTRICAL"  # a different trade (handyman/plumber/HVAC/GC)
+    AMBIGUOUS = "AMBIGUOUS"            # insufficient evidence to classify
 
 
 @dataclass
@@ -63,6 +73,7 @@ class Source:
     provider: str
     url: Optional[str] = None
     retrieved_at: Optional[str] = None
+    is_synthetic: bool = False  # True when produced from a fixture/synthetic provider
 
 
 @dataclass
@@ -73,10 +84,45 @@ class SizeSignals:
     years_in_business: Optional[int] = None
     rating: Optional[float] = None
 
+    def any_present(self) -> bool:
+        return any(v is not None for v in (self.employees, self.review_count,
+                                           self.years_in_business, self.rating))
+
+
+@dataclass
+class ScoreContribution:
+    """One explainable line item in a lead's score (positive or negative)."""
+    signal: str
+    points: int
+    kind: str          # "positive" | "negative"
+    reason: str
+
+    def to_dict(self) -> dict:
+        return {"signal": self.signal, "points": self.points,
+                "kind": self.kind, "reason": self.reason}
+
+
+@dataclass
+class NormalizedBusiness:
+    """Output of the Normalizer stage: cleaned, standardized, still unscored.
+
+    This is the provider-independent representation the enrichment and
+    qualification stages consume — no provider-specific shapes leak past here.
+    """
+    company: str
+    location: Location = field(default_factory=Location)
+    website: Optional[str] = None
+    categories: list[str] = field(default_factory=list)          # cleaned, lowercased
+    contact_channels: ContactChannels = field(default_factory=ContactChannels)
+    decision_makers: list[DecisionMaker] = field(default_factory=list)
+    size_signals: SizeSignals = field(default_factory=SizeSignals)
+    source: Optional[Source] = None
+    provider_notes: str = ""
+
 
 @dataclass
 class Lead:
-    """The output contract. See architecture.md § Data model."""
+    """The output contract (the Lead Record)."""
     company: str
     location: Location = field(default_factory=Location)
     website: Optional[str] = None
@@ -87,23 +133,40 @@ class Lead:
     source: Optional[Source] = None
     research_notes: str = ""
 
-    # Populated by qualify():
+    # Enrichment-derived:
+    data_completeness: float = 0.0     # 0..1 fraction of key fields present
+    provenance_complete: bool = False  # source provider+url+retrieved_at present
+
+    # Qualification-engine-derived:
+    category_verdict: CategoryVerdict = CategoryVerdict.AMBIGUOUS
+    category_reason: str = ""
     qualification_score: int = 0
-    score_breakdown: dict = field(default_factory=dict)
+    score_breakdown: dict = field(default_factory=dict)          # {signal: points}
+    score_contributions: list = field(default_factory=list)      # [ScoreContribution]
     estimated_opportunity: Opportunity = Opportunity.UNKNOWN
     estimated_opportunity_basis: str = ""
     status: Status = Status.NEW
+    scoring_config_version: str = ""
 
     @property
     def id(self) -> str:
         return slugify(f"{self.company}-{self.location.city or ''}")
 
+    @property
+    def is_synthetic(self) -> bool:
+        return bool(self.source and self.source.is_synthetic)
+
     def to_dict(self) -> dict:
         d = asdict(self)
-        # Enums -> their string values for stable serialization.
         d["status"] = self.status.value
         d["estimated_opportunity"] = self.estimated_opportunity.value
+        d["category_verdict"] = self.category_verdict.value
+        d["score_contributions"] = [
+            c.to_dict() if isinstance(c, ScoreContribution) else c
+            for c in self.score_contributions
+        ]
         d["id"] = self.id
+        d["is_synthetic"] = self.is_synthetic
         return d
 
 
@@ -113,12 +176,6 @@ class Query:
     market: str          # e.g. "electrical contractors"
     location: str        # e.g. "Austin, TX"
     limit: Optional[int] = None
-
-    # Keywords that indicate the target service intent (used by scoring).
-    service_keywords: tuple[str, ...] = (
-        "electric", "electrical", "electrician", "wiring", "panel",
-        "lighting", "solar", "generator", "ev charger",
-    )
 
 
 def slugify(text: str) -> str:

@@ -1,9 +1,13 @@
 """FixtureProvider — deterministic, offline, SYNTHETIC data.
 
-Loads sample businesses from data/fixtures/*.json. The data is fabricated for
-testing the intelligence layer only; it does NOT describe real companies or real
-people (see ADR-0005). Filtering is a simple case-insensitive match on location
-and category/market so the pipeline exercises realistic branching.
+Loads sample businesses from a fixture JSON. The data is fabricated for testing
+the intelligence layer only; it does NOT describe real companies or real people
+(see ADR-0005). Every lead produced from this provider is flagged
+``is_synthetic`` end-to-end so it is never mistaken for real-world evidence.
+
+Filtering here is intentionally simple (location + loose market match): finding
+real businesses is a live-provider concern. The qualification engine — not the
+provider — decides relevance.
 """
 from __future__ import annotations
 
@@ -18,9 +22,17 @@ _DEFAULT_FIXTURE = (
     Path(__file__).resolve().parents[2] / "data" / "fixtures" / "electrical_contractors.json"
 )
 
+# Loose market tokens used only for provider-side prefiltering (not scoring).
+_MARKET_HINTS = (
+    "electric", "electrical", "electrician", "contractor", "contractors",
+    "wiring", "panel", "lighting", "solar", "generator", "hvac", "plumb",
+    "handyman", "roofing", "service", "services",
+)
+
 
 class FixtureProvider(ResearchProvider):
     name = "fixture"
+    is_synthetic = True
 
     def __init__(self, fixture_path: Optional[Path] = None):
         self.fixture_path = Path(fixture_path) if fixture_path else _DEFAULT_FIXTURE
@@ -34,16 +46,19 @@ class FixtureProvider(ResearchProvider):
         records = self._load()
         loc = query.location.lower()
         market = query.market.lower()
+        market_tokens = [t for t in market.replace(",", " ").split() if len(t) > 2]
         results: list[RawBusiness] = []
         for r in records:
             hay_loc = " ".join(
                 str(r.get(k, "")) for k in ("city", "region", "country")
             ).lower()
             hay_cat = " ".join(r.get("categories", [])).lower() + " " + r.get("name", "").lower()
-            # Location must plausibly match; market match is soft (scoring handles relevance).
             loc_ok = (not loc) or any(tok in hay_loc for tok in _tokens(loc))
-            market_ok = (not market) or any(tok in hay_cat for tok in _tokens(market)) \
-                or any(kw in hay_cat for kw in query.service_keywords)
+            market_ok = (
+                (not market)
+                or any(tok in hay_cat for tok in market_tokens)
+                or any(hint in hay_cat for hint in _MARKET_HINTS)
+            )
             if loc_ok and market_ok:
                 results.append(_to_raw(r))
         if query.limit is not None:

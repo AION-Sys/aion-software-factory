@@ -42,6 +42,9 @@ class ResearchProvider(abc.ABC):
     """Acquire candidate businesses for a query."""
 
     name: str = "abstract"
+    # True for fixture/synthetic providers so downstream never treats their
+    # output as real-world evidence (MISSION-003).
+    is_synthetic: bool = False
 
     @abc.abstractmethod
     def search(self, query: Query) -> list[RawBusiness]:

@@ -1,0 +1,255 @@
+{
+  "_synthetic": true,
+  "_disclaimer": "SYNTHETIC / FABRICATED DATA for governance, testing, and calibration only (MISSION-003). These businesses, people, websites, and contacts are invented. They are NOT real and are NOT real-world evidence. Do not use for outreach. All websites use example.com; phones use the reserved 555-01xx range.",
+  "schema": {
+    "ground_truth.is_target": "Business truth: is this a legitimate electrical-contractor prospect worth pursuing?",
+    "ground_truth.expected_category": "Expected CategoryVerdict from the engine.",
+    "ground_truth.expected_qualified": "Whether the engine SHOULD output status=QUALIFIED given the record's data completeness."
+  },
+  "businesses": [
+    {
+      "name": "Mile High Electric Contractors (SAMPLE)",
+      "website": "https://example.com/mile-high-electric", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["electrical contractor", "commercial electrical", "residential electrical"],
+      "phone": "+1-303-555-0101", "email": "info@example.com", "contact_form_url": "https://example.com/mile-high-electric/contact",
+      "socials": ["https://example.com/social/milehigh"], "employees": 55, "review_count": 220, "years_in_business": 20, "rating": 4.7,
+      "decision_makers": [{"name": "Sample Owner A", "title": "President", "source": "company website (sample)"}],
+      "source_url": "https://example.com/mile-high-electric",
+      "notes": "Obvious established electrical contractor, complete data.",
+      "ground_truth": {"is_target": true, "expected_category": "ELECTRICAL", "expected_qualified": true}
+    },
+    {
+      "name": "Rocky Mountain Electric Co (SAMPLE)",
+      "website": "https://example.com/rocky-mtn-electric", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["electrical contractor", "electrician"],
+      "phone": "+1-303-555-0102", "email": "hello@example.com", "contact_form_url": null,
+      "socials": [], "employees": 40, "review_count": 130, "years_in_business": 15, "rating": 4.6,
+      "decision_makers": [{"name": "Sample Owner B", "title": "Founder", "source": "company website (sample)"}],
+      "source_url": "https://example.com/rocky-mtn-electric",
+      "notes": "Established electrical contractor.",
+      "ground_truth": {"is_target": true, "expected_category": "ELECTRICAL", "expected_qualified": true}
+    },
+    {
+      "name": "Denver Commercial Electric (SAMPLE)",
+      "website": "https://example.com/denver-commercial-electric", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["commercial electrical", "industrial electrical", "electrical contractor"],
+      "phone": "+1-303-555-0103", "email": "sales@example.com", "contact_form_url": "https://example.com/denver-commercial-electric/quote",
+      "socials": [], "employees": 90, "review_count": 180, "years_in_business": 22, "rating": 4.8,
+      "decision_makers": [{"name": "Sample Exec C", "title": "VP Operations", "source": "press release (sample)"}],
+      "source_url": "https://example.com/denver-commercial-electric",
+      "notes": "Large commercial/industrial electrical contractor.",
+      "ground_truth": {"is_target": true, "expected_category": "ELECTRICAL", "expected_qualified": true}
+    },
+    {
+      "name": "Front Range Industrial Electric (SAMPLE)",
+      "website": "https://example.com/front-range-industrial", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["commercial electrical", "electrical contractor"],
+      "phone": "+1-303-555-0104", "email": null, "contact_form_url": null,
+      "socials": [], "employees": 60, "review_count": 75, "years_in_business": 12, "rating": 4.4,
+      "decision_makers": [], "source_url": "https://example.com/front-range-industrial",
+      "notes": "Commercial electrical contractor.",
+      "ground_truth": {"is_target": true, "expected_category": "ELECTRICAL", "expected_qualified": true}
+    },
+    {
+      "name": "Aurora Residential Electricians (SAMPLE)",
+      "website": "https://example.com/aurora-residential", "city": "Aurora", "region": "CO", "country": "USA",
+      "categories": ["residential electrical", "electrician"],
+      "phone": "+1-303-555-0105", "email": "info@example.com", "contact_form_url": null,
+      "socials": [], "employees": null, "review_count": 60, "years_in_business": 8, "rating": 4.5,
+      "decision_makers": [], "source_url": "https://example.com/aurora-residential",
+      "notes": "Residential electricians.",
+      "ground_truth": {"is_target": true, "expected_category": "ELECTRICAL", "expected_qualified": true}
+    },
+    {
+      "name": "Boulder Home Electric (SAMPLE)",
+      "website": "https://example.com/boulder-home-electric", "city": "Boulder", "region": "CO", "country": "USA",
+      "categories": ["residential electrical", "electrician"],
+      "phone": null, "email": "contact@example.com", "contact_form_url": null,
+      "socials": [], "employees": null, "review_count": 35, "years_in_business": 6, "rating": 4.2,
+      "decision_makers": [], "source_url": "https://example.com/boulder-home-electric",
+      "notes": "Residential electrician.",
+      "ground_truth": {"is_target": true, "expected_category": "ELECTRICAL", "expected_qualified": true}
+    },
+    {
+      "name": "Summit Electrical Subcontractors (SAMPLE)",
+      "website": "https://example.com/summit-electrical-sub", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["electrical subcontractor", "commercial electrical"],
+      "phone": "+1-303-555-0107", "email": "bids@example.com", "contact_form_url": null,
+      "socials": [], "employees": 25, "review_count": null, "years_in_business": 10, "rating": 4.3,
+      "decision_makers": [], "source_url": "https://example.com/summit-electrical-sub",
+      "notes": "Electrical subcontractor for GCs.",
+      "ground_truth": {"is_target": true, "expected_category": "ELECTRICAL", "expected_qualified": true}
+    },
+    {
+      "name": "Peak Power Electrical Subcontractor (SAMPLE)",
+      "website": "https://example.com/peak-power-sub", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["electrical subcontractor"],
+      "phone": "+1-303-555-0108", "email": null, "contact_form_url": null,
+      "socials": [], "employees": null, "review_count": 20, "years_in_business": 4, "rating": 4.0,
+      "decision_makers": [], "source_url": "https://example.com/peak-power-sub",
+      "notes": "Small electrical subcontractor.",
+      "ground_truth": {"is_target": true, "expected_category": "ELECTRICAL", "expected_qualified": true}
+    },
+    {
+      "name": "SunWire Solar & Electrical (SAMPLE)",
+      "website": "https://example.com/sunwire", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["solar", "electrical contractor", "battery storage"],
+      "phone": "+1-303-555-0109", "email": "info@example.com", "contact_form_url": null,
+      "socials": [], "employees": 30, "review_count": 50, "years_in_business": 7, "rating": 4.4,
+      "decision_makers": [], "source_url": "https://example.com/sunwire",
+      "notes": "Solar company that is ALSO a licensed electrical contractor.",
+      "ground_truth": {"is_target": true, "expected_category": "ELECTRICAL", "expected_qualified": true}
+    },
+    {
+      "name": "Colorado Solar Electric (SAMPLE)",
+      "website": "https://example.com/co-solar-electric", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["solar", "electrician"],
+      "phone": "+1-303-555-0110", "email": "info@example.com", "contact_form_url": null,
+      "socials": [], "employees": null, "review_count": 40, "years_in_business": 5, "rating": 4.1,
+      "decision_makers": [], "source_url": "https://example.com/co-solar-electric",
+      "notes": "Solar + electrician.",
+      "ground_truth": {"is_target": true, "expected_category": "ELECTRICAL", "expected_qualified": true}
+    },
+    {
+      "name": "BuildRight GC & Electrical Division (SAMPLE)",
+      "website": "https://example.com/buildright", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["general contractor", "electrical contractor"],
+      "phone": "+1-303-555-0111", "email": "info@example.com", "contact_form_url": "https://example.com/buildright/contact",
+      "socials": [], "employees": 120, "review_count": 90, "years_in_business": 25, "rating": 4.5,
+      "decision_makers": [{"name": "Sample Exec D", "title": "Director of Electrical", "source": "company website (sample)"}],
+      "source_url": "https://example.com/buildright",
+      "notes": "General contractor WITH a dedicated electrical division — should still qualify.",
+      "ground_truth": {"is_target": true, "expected_category": "ELECTRICAL", "expected_qualified": true}
+    },
+    {
+      "name": "Longmont Electric (SAMPLE)",
+      "website": null, "city": "Longmont", "region": "CO", "country": "USA",
+      "categories": ["electrical contractor", "residential electrical"],
+      "phone": "+1-303-555-0112", "email": "info@example.com", "contact_form_url": null,
+      "socials": [], "employees": null, "review_count": 30, "years_in_business": 7, "rating": 4.2,
+      "decision_makers": [], "source_url": "https://example.com/directory/longmont-electric",
+      "notes": "Real electrical contractor but NO website found (incomplete data).",
+      "ground_truth": {"is_target": true, "expected_category": "ELECTRICAL", "expected_qualified": false}
+    },
+    {
+      "name": "Castle Rock Electricians (SAMPLE)",
+      "website": "https://example.com/castle-rock-electric", "city": "Castle Rock", "region": "CO", "country": "USA",
+      "categories": ["electrician", "electrical contractor"],
+      "phone": null, "email": null, "contact_form_url": null,
+      "socials": [], "employees": null, "review_count": 25, "years_in_business": 5, "rating": 4.0,
+      "decision_makers": [], "source_url": "https://example.com/castle-rock-electric",
+      "notes": "Real electrical contractor but NO contact channel found (incomplete data).",
+      "ground_truth": {"is_target": true, "expected_category": "ELECTRICAL", "expected_qualified": false}
+    },
+    {
+      "name": "PureSun Solar (SAMPLE)",
+      "website": "https://example.com/puresun-solar", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["solar", "photovoltaic"],
+      "phone": "+1-303-555-0113", "email": "info@example.com", "contact_form_url": null,
+      "socials": [], "employees": null, "review_count": 80, "years_in_business": 9, "rating": 4.3,
+      "decision_makers": [], "source_url": "https://example.com/puresun-solar",
+      "notes": "Solar-only, no confirmed electrical-contractor category — adjacent, needs review not auto-qualify.",
+      "ground_truth": {"is_target": false, "expected_category": "ADJACENT", "expected_qualified": false}
+    },
+    {
+      "name": "Denver General Contractors LLC (SAMPLE)",
+      "website": "https://example.com/denver-gc", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["general contractor", "remodeling"],
+      "phone": "+1-303-555-0114", "email": "info@example.com", "contact_form_url": null,
+      "socials": [], "employees": 40, "review_count": 100, "years_in_business": 18, "rating": 4.4,
+      "decision_makers": [], "source_url": "https://example.com/denver-gc",
+      "notes": "General contractor, no electrical specialization.",
+      "ground_truth": {"is_target": false, "expected_category": "NON_ELECTRICAL", "expected_qualified": false}
+    },
+    {
+      "name": "Mountain Build General Contracting (SAMPLE)",
+      "website": "https://example.com/mountain-build", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["general contractor"],
+      "phone": "+1-303-555-0115", "email": null, "contact_form_url": null,
+      "socials": [], "employees": null, "review_count": 60, "years_in_business": 11, "rating": 4.1,
+      "decision_makers": [], "source_url": "https://example.com/mountain-build",
+      "notes": "General contractor, no electrical.",
+      "ground_truth": {"is_target": false, "expected_category": "NON_ELECTRICAL", "expected_qualified": false}
+    },
+    {
+      "name": "Denver Handyman & Minor Electrical (SAMPLE)",
+      "website": "https://example.com/denver-handyman", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["handyman", "home repair", "minor electrical work"],
+      "phone": "+1-303-555-0116", "email": "info@example.com", "contact_form_url": null,
+      "socials": [], "employees": null, "review_count": 45, "years_in_business": 6, "rating": 4.0,
+      "decision_makers": [], "source_url": "https://example.com/denver-handyman",
+      "notes": "Handyman advertising 'minor electrical' — this is the Q1 regression case; must NOT qualify.",
+      "ground_truth": {"is_target": false, "expected_category": "NON_ELECTRICAL", "expected_qualified": false}
+    },
+    {
+      "name": "Handy Home Helpers (SAMPLE)",
+      "website": "https://example.com/handy-home-helpers", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["handyman"],
+      "phone": "+1-303-555-0117", "email": null, "contact_form_url": null,
+      "socials": [], "employees": null, "review_count": null, "years_in_business": null, "rating": null,
+      "decision_makers": [], "source_url": "https://example.com/handy-home-helpers",
+      "notes": "Handyman.",
+      "ground_truth": {"is_target": false, "expected_category": "NON_ELECTRICAL", "expected_qualified": false}
+    },
+    {
+      "name": "Front Range HVAC & Heating (SAMPLE)",
+      "website": "https://example.com/front-range-hvac", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["hvac", "heating and cooling"],
+      "phone": "+1-303-555-0118", "email": "info@example.com", "contact_form_url": null,
+      "socials": [], "employees": 50, "review_count": 140, "years_in_business": 20, "rating": 4.6,
+      "decision_makers": [], "source_url": "https://example.com/front-range-hvac",
+      "notes": "HVAC company, not electrical.",
+      "ground_truth": {"is_target": false, "expected_category": "NON_ELECTRICAL", "expected_qualified": false}
+    },
+    {
+      "name": "CoolAir HVAC Services (SAMPLE)",
+      "website": "https://example.com/coolair-hvac", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["hvac", "air conditioning"],
+      "phone": "+1-303-555-0119", "email": null, "contact_form_url": null,
+      "socials": [], "employees": null, "review_count": 30, "years_in_business": 8, "rating": 4.2,
+      "decision_makers": [], "source_url": "https://example.com/coolair-hvac",
+      "notes": "HVAC.",
+      "ground_truth": {"is_target": false, "expected_category": "NON_ELECTRICAL", "expected_qualified": false}
+    },
+    {
+      "name": "Denver Plumbing Pros (SAMPLE)",
+      "website": "https://example.com/denver-plumbing", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["plumber", "plumbing"],
+      "phone": "+1-303-555-0120", "email": "info@example.com", "contact_form_url": null,
+      "socials": [], "employees": null, "review_count": 120, "years_in_business": 15, "rating": 4.5,
+      "decision_makers": [], "source_url": "https://example.com/denver-plumbing",
+      "notes": "Plumber, not electrical.",
+      "ground_truth": {"is_target": false, "expected_category": "NON_ELECTRICAL", "expected_qualified": false}
+    },
+    {
+      "name": "Rooter Plumbing Co (SAMPLE)",
+      "website": "https://example.com/rooter-plumbing", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": ["plumbing"],
+      "phone": "+1-303-555-0121", "email": null, "contact_form_url": null,
+      "socials": [], "employees": null, "review_count": null, "years_in_business": null, "rating": null,
+      "decision_makers": [], "source_url": "https://example.com/rooter-plumbing",
+      "notes": "Plumbing.",
+      "ground_truth": {"is_target": false, "expected_category": "NON_ELECTRICAL", "expected_qualified": false}
+    },
+    {
+      "name": "Bright Spark Solutions (SAMPLE)",
+      "website": "https://example.com/bright-spark", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": [],
+      "phone": "+1-303-555-0122", "email": null, "contact_form_url": null,
+      "socials": [], "employees": null, "review_count": 15, "years_in_business": 3, "rating": 3.9,
+      "decision_makers": [], "source_url": "https://example.com/bright-spark",
+      "notes": "Ambiguous name, no category evidence — cannot confirm electrical.",
+      "ground_truth": {"is_target": false, "expected_category": "AMBIGUOUS", "expected_qualified": false}
+    },
+    {
+      "name": "Current Solutions Group (SAMPLE)",
+      "website": "https://example.com/current-solutions", "city": "Denver", "region": "CO", "country": "USA",
+      "categories": [],
+      "phone": null, "email": null, "contact_form_url": null,
+      "socials": [], "employees": null, "review_count": null, "years_in_business": null, "rating": null,
+      "decision_makers": [], "source_url": "https://example.com/current-solutions",
+      "notes": "Ambiguous name, zero evidence (no category, no contact, no size) — insufficient evidence.",
+      "ground_truth": {"is_target": false, "expected_category": "AMBIGUOUS", "expected_qualified": false}
+    }
+  ]
+}

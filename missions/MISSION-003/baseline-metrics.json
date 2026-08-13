@@ -1,0 +1,21 @@
+{
+  "_disclaimer": "SYNTHETIC baseline — NOT real-world evidence (MISSION-003).",
+  "dataset": "synthetic_leads.json",
+  "scoring_config_version": "1.0.0",
+  "records": 24,
+  "confusion_matrix": {
+    "tp": 11,
+    "fp": 0,
+    "fn": 2,
+    "tn": 11
+  },
+  "qualification_precision": 1.0,
+  "recall": 0.846,
+  "false_positive_rate": 0.0,
+  "false_negative_rate": 0.154,
+  "category_accuracy": 1.0,
+  "expected_behavior_accuracy": 1.0,
+  "average_data_completeness": 0.833,
+  "provenance_completeness_rate": 1.0,
+  "mismatches": []
+}

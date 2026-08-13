@@ -1,87 +1,61 @@
-"""ENRICH — map a RawBusiness into the canonical Lead schema.
+"""ENRICH — NormalizedBusiness -> Lead (the Lead Record).
 
-Rule (AC-2, AC-6): never fabricate. Missing fields become None / empty. We only
-normalize and carry forward what the provider supplied. Decision-makers are only
-included when the source legitimately provided them.
+In V1 (offline, no live provider) enrichment is derivation only: it computes data
+completeness and provenance completeness, and writes honest research notes. It
+never fabricates. Real external enrichment (e.g. firmographics) is a future,
+approved capability that plugs in here.
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from .models import Lead, NormalizedBusiness
 
-from .models import (
-    ContactChannels,
-    DecisionMaker,
-    Lead,
-    Location,
-    Query,
-    SizeSignals,
-    Source,
+# Key fields used to measure how complete a lead's data is.
+_COMPLETENESS_FIELDS = (
+    "company", "website", "location_city", "category",
+    "contact", "size_signal", "decision_maker",
 )
-from .providers.base import RawBusiness
 
 
-def enrich(raw: RawBusiness, query: Query, retrieved_at: str | None = None) -> Lead:
-    location = Location(
-        city=_clean(raw.city),
-        region=_clean(raw.region),
-        country=_clean(raw.country),
-    )
-    contacts = ContactChannels(
-        phone=_clean(raw.phone),
-        email=_clean(raw.email),
-        contact_form_url=_clean(raw.contact_form_url),
-        socials=[s for s in (raw.socials or []) if s],
-    )
-    decision_makers = [
-        DecisionMaker(
-            name=dm.get("name", "").strip(),
-            title=_clean(dm.get("title")),
-            source=_clean(dm.get("source")),
-            contact=_clean(dm.get("contact")),
-        )
-        for dm in (raw.decision_makers or [])
-        if dm.get("name")
-    ]
-    size = SizeSignals(
-        employees=raw.employees,
-        review_count=raw.review_count,
-        years_in_business=raw.years_in_business,
-        rating=raw.rating,
-    )
-    notes = raw.notes.strip() if raw.notes else ""
-    if not decision_makers and "decision-maker" not in notes.lower():
+def enrich(nb: NormalizedBusiness) -> Lead:
+    notes = nb.provider_notes
+    if not nb.decision_makers and "decision-maker" not in notes.lower():
         notes = _append(notes, "No decision-maker legitimately available at research time.")
-    if not raw.website and "website" not in notes.lower():
+    if not nb.website and "website" not in notes.lower():
         notes = _append(notes, "No website found.")
 
-    return Lead(
-        company=raw.name.strip(),
-        location=location,
-        website=_clean(raw.website),
-        service_type=[c.strip() for c in (raw.categories or []) if c.strip()],
-        contact_channels=contacts,
-        decision_makers=decision_makers,
-        size_signals=size,
-        source=Source(
-            provider=_provider_of(raw),
-            url=_clean(raw.source_url),
-            retrieved_at=retrieved_at or datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        ),
+    lead = Lead(
+        company=nb.company,
+        location=nb.location,
+        website=nb.website,
+        service_type=list(nb.categories),
+        contact_channels=nb.contact_channels,
+        decision_makers=list(nb.decision_makers),
+        size_signals=nb.size_signals,
+        source=nb.source,
         research_notes=notes,
     )
+    lead.data_completeness = _completeness(lead)
+    lead.provenance_complete = _provenance_complete(lead)
+    return lead
 
 
-def _clean(value):
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
+def _completeness(lead: Lead) -> float:
+    present = {
+        "company": bool(lead.company),
+        "website": bool(lead.website),
+        "location_city": bool(lead.location.city),
+        "category": bool(lead.service_type),
+        "contact": lead.contact_channels.has_any(),
+        "size_signal": lead.size_signals.any_present(),
+        "decision_maker": bool(lead.decision_makers),
+    }
+    return round(sum(1 for v in present.values() if v) / len(_COMPLETENESS_FIELDS), 3)
+
+
+def _provenance_complete(lead: Lead) -> bool:
+    s = lead.source
+    return bool(s and s.provider and s.url and s.retrieved_at)
 
 
 def _append(notes: str, extra: str) -> str:
     return f"{notes} {extra}".strip() if notes else extra
-
-
-def _provider_of(raw: RawBusiness) -> str:
-    # Provenance hint; the pipeline overwrites with the actual provider name.
-    return "unknown"

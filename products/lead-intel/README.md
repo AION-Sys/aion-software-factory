@@ -1,59 +1,80 @@
-# Lead Intelligence (V1) — `lead-intel`
+# Lead Intelligence — `lead-intel`
 
-Built by the AION Software Factory for **MISSION-002**. Turns a
-`(market, location)` input into a structured, scored electrical-contractor lead
-list. **Intelligence layer only — no outreach.**
+Built by the AION Software Factory (MISSION-002, hardened in MISSION-003). Turns a
+`(market, location)` input into a structured, **scored, explainable**
+electrical-contractor lead list. **Intelligence layer only — no outreach.**
 
-> V1 runs fully **offline** on **synthetic** sample data (no credentials, no
-> network). Real/paid data acquisition is a disabled, human-gated seam. See
-> `../../missions/MISSION-002/` for the full mission package and
-> `../../docs/decisions/0005-fixture-first-gated-live-acquisition.md`.
+> Runs fully **offline** on **synthetic** data (no credentials, no network). Every
+> synthetic lead is labeled `is_synthetic` end-to-end and is **NOT real-world
+> evidence**. Real/paid data acquisition is a disabled, human-gated seam — see
+> `../../docs/operations/live-provider-activation-checklist.md`.
 
-## Pipeline
-`INPUT → RESEARCH → ENRICH → QUALIFY → ORGANIZE → OUTPUT`
+## Pipeline (clean stage separation)
+```
+Data Provider → Raw Data → Normalizer → Enrichment → Qualification Engine → Lead → Output
+providers/*     RawBusiness  normalize.py  enrich.py    scoring/engine.py            output.py
+```
+The **qualification engine is provider-independent**: it consumes an enriched
+`Lead` + a `ScoringConfig`, never provider-specific shapes.
 
 ## Run it
 ```bash
 cd products/lead-intel
-python3 cli.py --market "electrical contractors" --location "Austin, TX"
-# options: --limit N  --out DIR  --run-id NAME  --fixture PATH  --provider fixture|live
+python3 cli.py --market "electrical contractors" --location "Denver, CO" \
+    --fixture data/fixtures/synthetic_leads.json
+# options: --limit N  --out DIR  --run-id NAME  --config scoring.json  --provider fixture|live
 ```
-Outputs (per run) in the chosen `--out` dir: `<run>.csv`, `.json`, `.jsonl`, and
-`.run-summary.json`. A committed sample lives in `examples/`.
+
+## Measure it (baseline metrics on the labeled dataset)
+```bash
+python3 evaluate.py            # precision / FP / FN / completeness (SYNTHETIC)
+python3 evaluate.py --json     # machine-readable
+```
+
+## Scoring model — explicit, configurable, explainable (ADR-0006)
+Two parts:
+1. **Category validation (gate).** Each business is classified `ELECTRICAL`,
+   `ADJACENT`, `NON_ELECTRICAL`, or `AMBIGUOUS`. Only `ELECTRICAL` can be
+   `QUALIFIED`; non-electrical trades (handyman/plumber/HVAC/GC-without-electrical)
+   are gated out.
+2. **Weighted signals.** Positive add, negative subtract; every lead records a
+   `why` (per-signal points + reasons).
+
+All weights, thresholds, and keyword lists live in
+`leadintel/scoring/default_config.json` — tune there, not in code. Provide your
+own with `--config`.
 
 ## Output fields (per lead)
-`company, website, location, service_type, estimated_opportunity (+basis),
-decision_makers, contact_channels (phone/email/form/socials),
-qualification_score, score_breakdown, status, research_notes, source`.
-
-## Qualification model (transparent, tunable)
-Score 0–100 = service relevance (25) + location match (15) + has website (15) +
-has contact (15) + opportunity signal (20) + decision-maker identified (10).
-Status: **≥60 QUALIFIED**, **40–59 NEEDS_REVIEW**, **<40 DISQUALIFIED**. Every
-lead carries a `score_breakdown` explaining its score. Weights/thresholds are
-constants in `leadintel/qualify.py`.
+`company, synthetic, category_verdict, status, qualification_score,
+estimated_opportunity, website, location, service_type, decision_makers,
+contact channels, score_breakdown, why, category_reason, data_completeness,
+provenance_complete, research_notes, source, scoring_config_version`.
 
 ## Tests
 ```bash
-cd products/lead-intel
-python3 -m unittest discover -s tests
+python3 -m unittest discover -s tests    # 50 tests
 ```
+Includes data-driven category/qualification regression tests
+(`tests/test_category.py`) over the labeled dataset.
 
 ## Layout
 ```
-leadintel/            core package (stdlib only)
-  models.py           canonical Lead schema + enums
-  providers/          base interface, fixture (default), live (disabled seam)
-  enrich.py           raw -> Lead (never fabricates)
-  qualify.py          scoring / status / opportunity
-  output.py           JSONL / JSON / CSV writers
-  pipeline.py         orchestration + run summary
-cli.py                command-line entry point
-data/fixtures/        SYNTHETIC sample data
-tests/                unittest suite
-examples/             committed sample run
+leadintel/
+  models.py            canonical schema, enums, NormalizedBusiness, contributions
+  providers/           base interface, fixture (synthetic default), live (disabled seam)
+  normalize.py         Normalizer: clean/standardize (provider-independent)
+  enrich.py            Enrichment: completeness + provenance, honest notes
+  scoring/             config.py + engine.py + default_config.json (the model)
+  output.py            CSV / JSON / JSONL writers (+ synthetic labels)
+  pipeline.py          orchestration + data-quality run summary
+  metrics.py           baseline metrics over the labeled dataset
+cli.py                 run the pipeline
+evaluate.py            compute baseline metrics
+data/fixtures/         synthetic_leads.json (labeled) + electrical_contractors.json
+tests/                 unittest suite (50 tests)
+examples/              committed sample runs
 ```
 
 ## Not in V1 (by design)
-Automated outreach · live/paid data provider · web UI · CRM sync · database.
-Enabling live acquisition requires human approval (YELLOW) and a security review.
+Live/paid data provider · real data · automated outreach · web UI · CRM · database
+· deployment. Enabling live acquisition requires the CEO gate (activation checklist).
