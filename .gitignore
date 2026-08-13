@@ -1,0 +1,53 @@
+# ---------------------------------------------------------------------------
+# AION Software Factory — ignore rules
+# Never commit secrets, credentials, or local environment artifacts.
+# ---------------------------------------------------------------------------
+
+# Secrets & credentials (defense in depth — nothing sensitive should ever land here)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*_rsa
+*_rsa.pub
+credentials.json
+secrets.json
+service-account*.json
+.aws/
+.supabase/
+
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Build / output
+dist/
+build/
+out/
+.next/
+coverage/
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Local scratch (agents should keep working notes out of the repo)
+scratch/
+tmp/
+.aion-local/
