@@ -51,3 +51,9 @@ Thumbs.db
 scratch/
 tmp/
 .aion-local/
+
+# Product run outputs (may contain business/contact data — keep out of git).
+# Committed samples live under examples/ and are intentionally NOT ignored.
+out/
+products/*/out/
+

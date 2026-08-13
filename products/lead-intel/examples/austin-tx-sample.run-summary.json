@@ -1,0 +1,23 @@
+{
+  "query": {
+    "market": "electrical contractors",
+    "location": "Austin, TX",
+    "limit": null
+  },
+  "provider": "fixture",
+  "total_leads": 7,
+  "by_status": {
+    "NEW": 0,
+    "QUALIFIED": 6,
+    "NEEDS_REVIEW": 1,
+    "DISQUALIFIED": 0
+  },
+  "average_score": 82.4,
+  "duration_ms": 2,
+  "files": {
+    "jsonl": "examples/austin-tx-sample.jsonl",
+    "json": "examples/austin-tx-sample.json",
+    "csv": "examples/austin-tx-sample.csv"
+  },
+  "generated_at": "2026-08-13T05:49:15+00:00"
+}
