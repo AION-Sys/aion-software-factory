@@ -51,12 +51,14 @@ def find_mission_files() -> list[Path]:
         return files
     # Flat mission files: missions/MISSION-*.md
     files.extend(sorted(MISSIONS_DIR.glob("MISSION-*.md")))
-    # Directory missions: missions/MISSION-*/mission.md
+    # Directory missions: missions/MISSION-*/{mission.md,MISSION.md}
     for d in sorted(MISSIONS_DIR.glob("MISSION-*")):
         if d.is_dir():
-            m = d / "mission.md"
-            if m.exists():
-                files.append(m)
+            for name in ("mission.md", "MISSION.md"):
+                m = d / name
+                if m.exists():
+                    files.append(m)
+                    break
     return files
 
 

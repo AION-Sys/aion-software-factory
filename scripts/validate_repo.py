@@ -97,8 +97,12 @@ def main() -> int:
     if missions_dir.exists():
         mission_files.extend(sorted(missions_dir.glob("MISSION-*.md")))
         for d in sorted(missions_dir.glob("MISSION-*")):
-            if d.is_dir() and (d / "mission.md").is_file():
-                mission_files.append(d / "mission.md")
+            if not d.is_dir():
+                continue
+            for name in ("mission.md", "MISSION.md"):
+                if (d / name).is_file():
+                    mission_files.append(d / name)
+                    break
     check(len(mission_files) >= 1, f"{len(mission_files)} mission(s) present",
           "no missions found", errors)
 
