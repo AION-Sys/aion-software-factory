@@ -24,6 +24,7 @@ research) and MUST be validated against a real API response before execution —
 from __future__ import annotations
 
 import os
+import re
 from typing import Callable, Optional
 
 from ..models import Query
@@ -35,7 +36,11 @@ ELECTRICAL_CONTRACTOR_NAICS = "238210"
 # Ratified pilot caps (MISSION-005). Constructor args default to these.
 RATIFIED_MAX_RECORDS = 500
 RATIFIED_SPEND_CAP_USD = 100.0
-APPROVED_MARKET_TOKENS = ("denver", "aurora", "lakewood", "co", "colorado")
+# Approved market: Denver–Aurora–Lakewood, CO. Matched as WHOLE TOKENS, and a
+# location must contain an approved city AND the approved state — so substrings
+# like "Aurora, IL", "Colorado Springs, CO", or "Concord, CA" are correctly rejected.
+APPROVED_MARKET_CITIES = ("denver", "aurora", "lakewood")
+APPROVED_MARKET_STATES = ("co", "colorado")
 
 
 class DataAxleGateError(RuntimeError):
@@ -54,7 +59,8 @@ class DataAxleProvider(ResearchProvider):
         max_records: int = RATIFIED_MAX_RECORDS,
         spend_cap_usd: float = RATIFIED_SPEND_CAP_USD,
         cost_per_record_usd: Optional[float] = None,
-        allowed_market_tokens: tuple[str, ...] = APPROVED_MARKET_TOKENS,
+        allowed_cities: tuple[str, ...] = APPROVED_MARKET_CITIES,
+        allowed_states: tuple[str, ...] = APPROVED_MARKET_STATES,
         naics: str = ELECTRICAL_CONTRACTOR_NAICS,
         transport: Optional[Callable[[dict], list[dict]]] = None,
     ):
@@ -63,13 +69,29 @@ class DataAxleProvider(ResearchProvider):
         self.max_records = max_records
         self.spend_cap_usd = spend_cap_usd
         self.cost_per_record_usd = cost_per_record_usd
-        self.allowed_market_tokens = tuple(t.lower() for t in allowed_market_tokens)
+        self.allowed_cities = tuple(c.lower() for c in allowed_cities)
+        self.allowed_states = tuple(s.lower() for s in allowed_states)
         self.naics = naics
         self._transport = transport  # injectable; real transport is unimplemented
 
     @property
     def api_key(self) -> Optional[str]:
         return os.environ.get(self.api_key_env)
+
+    @staticmethod
+    def _location_tokens(location: str) -> set[str]:
+        """Whole word tokens of a location string (letters only, lowercased)."""
+        return {t for t in re.split(r"[^a-z]+", (location or "").lower()) if t}
+
+    def _market_allowed(self, location: str) -> bool:
+        """Require an approved city AND the approved state, matched as whole tokens.
+
+        This rejects substring false positives such as 'Aurora, IL' (wrong state),
+        'Colorado Springs, CO' (not an approved city), and 'Concord, CA' ('co' is
+        only a substring of 'concord', not a token).
+        """
+        tokens = self._location_tokens(location)
+        return bool(tokens & set(self.allowed_cities)) and bool(tokens & set(self.allowed_states))
 
     # ---- gate / cap enforcement -------------------------------------------
     def _preflight(self, query: Query, requested: int) -> int:
@@ -86,11 +108,10 @@ class DataAxleProvider(ResearchProvider):
                 "only; never commit credentials)."
             )
         # Approved-market guard (no expansion beyond Denver–Aurora–Lakewood, CO).
-        loc = (query.location or "").lower()
-        if not any(tok in loc for tok in self.allowed_market_tokens):
+        if not self._market_allowed(query.location):
             raise DataAxleGateError(
                 f"Market '{query.location}' is outside the approved pilot market "
-                "(Denver–Aurora–Lakewood, CO). Refusing — scope guard."
+                "(Denver, Aurora, or Lakewood, CO). Refusing — scope guard."
             )
         # Volume cap (gate 10).
         n = requested if (requested and requested > 0) else self.max_records

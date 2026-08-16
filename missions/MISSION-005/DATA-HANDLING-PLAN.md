@@ -25,8 +25,9 @@ from `missions/MISSION-004/RISK-REVIEW.md`. Nothing here runs until legal signs 
 - Honor deletion/opt-out: maintain the ability to remove any record on request.
 
 ## Retention & deletion
-- Retain pilot data **≤90 days** (or the shorter period the Data Axle license
-  requires), solely to compute and verify metrics.
+- Retain pilot data **≤30 days** (ratified; or the shorter period the Data Axle
+  license requires), solely to compute and verify metrics. Any longer retention
+  requires CEO approval + documented legal/privacy review.
 - **Deletion procedure:** at end of retention (or on request/opt-out), delete the
   dataset and any derived files from the controlled store; record the deletion in the
   mission `Log`. Verify the license's own deletion obligations are met.

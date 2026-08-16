@@ -69,6 +69,20 @@ class TestDataAxleGates(unittest.TestCase):
         with self.assertRaises(DataAxleGateError):
             _armed().search(Query(market="electrical contractors", location="Austin, TX"))
 
+    def test_market_guard_rejects_substring_lookalikes(self):
+        # Whole-token city AND state required — no substring false positives.
+        for bad in ("Aurora, IL", "Colorado Springs, CO", "Concord, CA",
+                    "Denver, PA", "Lakewood, NJ", "Denver"):
+            with self.assertRaises(DataAxleGateError, msg=bad):
+                _armed().search(Query(market="electrical contractors", location=bad))
+
+    def test_market_guard_allows_approved_metro(self):
+        for good in ("Denver, CO", "Aurora, CO", "Lakewood, CO", "Denver, Colorado"):
+            # Should not raise on the market check (mock transport returns rows).
+            self.assertTrue(
+                _armed().search(Query(market="electrical contractors", location=good))
+            )
+
     def test_volume_cap_enforced(self):
         many = [dict(MOCK_ROWS[0], name=f"EC {i}") for i in range(1000)]
         p = _armed(max_records=500, transport=_mock_transport(many))

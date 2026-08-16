@@ -4,20 +4,20 @@ A small, bounded, one-shot test. Acquire → run through the existing engine →
 measure → decide. Nothing here executes until the CEO authorizes the parameters
 (`APPROVALS.md`) and legal signs off (`DATA-HANDLING-PLAN.md`).
 
-## 1. Bounded parameters (proposed — CEO ratifies exact values)
-| Parameter | Proposed value | Notes |
+## 1. Bounded parameters (RATIFIED by CEO 2026-08-13)
+| Parameter | Ratified value | Notes |
 |-----------|----------------|-------|
 | Provider | **Data Axle** (Business Data / Search API) | Selected in Mission 004 |
 | Vertical filter | **NAICS 238210** (electrical contractors) | Pre-filter at the provider |
-| Metro (one) | **Denver–Aurora–Lakewood, CO (MSA)** | Aligns with MISSION-003 calibration; CEO may substitute one metro |
-| Record volume cap | **2,000 records** (or all available if fewer) | Fixed; not to be exceeded |
-| **Hard spend cap** | **$250 USD, absolute not-to-exceed** | Includes any re-pulls; stop at cap regardless of records obtained |
+| Metro (one) | **Denver–Aurora–Lakewood, CO (MSA)** | Aligns with MISSION-003 calibration |
+| Record volume cap | **500 records** (or all available if fewer) | Fixed; not to be exceeded |
+| **Hard spend cap** | **$100 USD, absolute not-to-exceed** | Includes any re-pulls; stop at cap regardless of records obtained |
 | Human-label sample | **100 records random** (or all if fewer) | Ground truth for precision/recall/false-positive |
-| Retention | **≤90 days**, then delete (or shorter per license) | See data-handling plan |
+| Retention | **≤30 days**, then delete (or shorter per license) | Longer needs CEO + legal review. See data-handling plan |
 | Engine | **MISSION-003 engine, config v1.0.0, unchanged** | We test the provider against our *current* model |
 
-Estimated cost at cap: 2,000 × ~$0.05–0.075/record ≈ **$100–$150** (ESTIMATED,
-Mission 004; confirm with a written quote before purchase). The **$250 hard cap**
+Estimated cost at cap: 500 × ~$0.05–0.075/record ≈ **$25–$38** (ESTIMATED,
+Mission 004; confirm with a written quote before purchase). The **$100 hard cap**
 sits above that with margin and is the true limit.
 
 ## 2. Method (five steps, in order)
@@ -34,8 +34,8 @@ sits above that with margin and is the true limit.
    human-labeled sample, and produce the AION Intelligence Evaluation report.
 
 ## 3. Stop conditions (any one → halt immediately)
-1. **Spend** reaches the $250 cap → stop acquisition.
-2. **Volume** reaches 2,000 records → stop acquisition.
+1. **Spend** reaches the $100 cap → stop acquisition.
+2. **Volume** reaches 500 records → stop acquisition.
 3. **Legal/ToS blocker** discovered (storage or use not permitted) → stop; do not proceed.
 4. A **secret/credential** would have to be committed or exposed → stop; fix via secret manager.
 5. **Sensitive/special-category PII** appears, or any compliance red flag → stop, quarantine, escalate.

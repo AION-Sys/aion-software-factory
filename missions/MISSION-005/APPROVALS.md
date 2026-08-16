@@ -4,14 +4,16 @@ The pilot does **not** start until every box below is checked. Boxes are uncheck
 design; the CEO and legal complete them. This operationalizes
 `docs/operations/live-provider-activation-checklist.md` for the Data Axle pilot.
 
-## A. CEO authorization (the five parameters)
+## A. CEO authorization (the five parameters — RATIFIED 2026-08-13)
+The parameters below were **ratified by the CEO on 2026-08-13**. Sign-off here
+confirms them; do not substitute the earlier proposed values.
 - [ ] **Provider:** Data Axle confirmed for the pilot.
-- [ ] **Spend cap:** hard, absolute not-to-exceed amount (proposed **$250**).
-- [ ] **Metro + volume:** one metro (proposed **Denver–Aurora–Lakewood, CO**) and
-      record cap (proposed **2,000**).
-- [ ] **PII handling:** retention window (proposed **≤90 days**) + deletion/opt-out process.
+- [ ] **Spend cap:** hard, absolute not-to-exceed **$100 USD**.
+- [ ] **Metro + volume:** one metro **Denver–Aurora–Lakewood, CO** and record cap **500**.
+- [ ] **PII handling:** retention window **≤30 days** (or shorter per license; any
+      longer requires CEO approval + legal/privacy review) + deletion/opt-out process.
 - [ ] **Storage authorization:** approve storing real prospect data in the defined
-      access-controlled, non-repo location.
+      encrypted, access-controlled, non-repo location.
 
 ## B. Pre-registered thresholds
 - [ ] CEO ratifies (or edits) the acceptance thresholds in `MEASUREMENT-PLAN.md` §C,
