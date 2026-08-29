@@ -1,0 +1,72 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #0f1419;
+  color: #e7ecf3;
+}
+
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.header {
+  margin-bottom: 2.5rem;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: #7b8a9a;
+  margin: 0 0 0.5rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin: 0 0 0.75rem;
+}
+
+.subtitle {
+  color: #9aa8b7;
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  background: #1a2332;
+  border: 1px solid #2a3647;
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.card h2 {
+  font-size: 1rem;
+  margin: 0 0 0.75rem;
+}
+
+.card ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: #b8c4d0;
+  font-size: 0.9rem;
+}
+
+.card li + li {
+  margin-top: 0.35rem;
+}

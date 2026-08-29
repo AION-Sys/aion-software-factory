@@ -1,0 +1,54 @@
+name: New Mission Request
+description: Propose a new AION mission (PM intake)
+title: "[Mission] "
+labels: ["mission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this to propose a new mission. PM will convert approved requests into `missions/MISSION-{NNN}.md` using the mission template.
+  - type: textarea
+    id: objective
+    attributes:
+      label: CEO Objective
+      description: One sentence — what outcome do we need?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired Outcome
+      description: What does "done" look like?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope (in)
+      description: What is included?
+    validations:
+      required: true
+  - type: textarea
+    id: out_of_scope
+    attributes:
+      label: Out of Scope
+      description: What is explicitly excluded?
+  - type: textarea
+    id: success_metric
+    attributes:
+      label: Success Metric
+      description: How will we know this succeeded?
+  - type: input
+    id: product_repo
+    attributes:
+      label: Product Repository
+      description: GitHub repo URL if applicable, or "Factory only"
+  - type: checkboxes
+    id: gates
+    attributes:
+      label: Anticipated Approval Gates
+      options:
+        - label: Production deployment
+        - label: New paid third-party service
+        - label: Production data migration
+        - label: Material architecture change
