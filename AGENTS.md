@@ -41,6 +41,7 @@ Each role uses templates in `docs/templates/` and follows `docs/workflows/END_TO
 | `AION-BUILDER` | Pull request + tests | Product repo PR template |
 | `AION-QA` | Verification report | `QA_REPORT.template.md` |
 | `AION-SECURITY` | Security review (when triggered) | `SECURITY_REVIEW.template.md` |
+| `AION-RELEASE` | Deployment evidence, release checklist, production gate handoff | Product repo release notes / deploy log |
 
 Standards: `docs/standards/TESTING.md`, `docs/standards/SECURITY.md`. Product repo layout: `docs/architecture/OVERVIEW.md`.
 

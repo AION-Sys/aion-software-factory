@@ -1,7 +1,7 @@
 # Mission 001 — AION Software Factory Bootstrap
 
 ## Status
-ACTIVE — FOUNDATION
+COMPLETE
 
 ## CEO Objective
 Build the minimum operating foundation that allows AION to turn a CEO-level product request into a structured, reviewable software-development workflow.
@@ -39,4 +39,4 @@ AION can take one real product idea and produce a reviewable implementation work
 No production deployment is authorized by this mission. The CEO reviews and approves the factory's first real product mission before production access is granted.
 
 ## Next Mission
-Select one revenue-connected AION product/problem for Mission 002.
+[MISSION-002 — AION Revenue Conversion Copilot](MISSION-002.md)

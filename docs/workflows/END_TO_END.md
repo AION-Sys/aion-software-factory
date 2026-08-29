@@ -8,11 +8,17 @@ This is the standard path from CEO objective to reviewable, mergeable software. 
 CEO Objective
      │
      ▼
-┌─────────┐    ┌─────────────┐    ┌──────────┐    ┌─────┐    ┌──────────┐    ┌──────────────┐
-│ AION-PM │───▶│AION-ARCHITECT│───▶│AION-BUILDER│───▶│ QA  │───▶│ SECURITY │───▶│ Human Approval│
-└─────────┘    └─────────────┘    └──────────┘    └─────┘    └──────────┘    └──────────────┘
-  Mission         Architecture        PR(s)         Report      (if needed)      Merge / Deploy
-  + PRD           + Tasks
+┌─────────┐    ┌─────────────┐    ┌──────────┐    ┌─────┐    ┌──────────┐    ┌──────────────┐    ┌──────────────┐
+│ AION-PM │───▶│AION-ARCHITECT│───▶│AION-BUILDER│───▶│ QA  │───▶│ SECURITY │───▶│AION-RELEASE  │───▶│ Human Approval│
+└─────────┘    └─────────────┘    └──────────┘    └─────┘    └──────────┘    └──────────────┘    └──────────────┘
+  Mission         Architecture        PR(s)         Report      (if needed)    Deploy evidence      Merge / Deploy
+  + PRD           + Tasks                                                          + CEO gate
+                                                                                        │
+                                                                                        ▼
+                                                                              Real usage + validation
+                                                                                        │
+                                                                                        ▼
+                                                                              Learning events → improvements
 ```
 
 ## Phase 1 — PM (Mission + PRD)
@@ -101,6 +107,36 @@ CEO Objective
 3. For production deploy: separate explicit approval per mission gate.
 
 **Output:** Merged PR; mission acceptance criteria checked off; deploy when authorized.
+
+## Phase 7 — Release (Product Missions)
+
+**Role:** `AION-RELEASE`
+
+**Input:** Merged main branch, QA + security sign-off, CEO production deploy approval.
+
+**Actions:**
+1. Deploy to production per product `ARCHITECTURE.md`.
+2. Record deployment evidence (URL, commit SHA, timestamp, config version).
+3. Confirm smoke checks pass in production.
+4. Hand off to sales/users for real-world usage.
+
+**Output:** Production MVP live; release record in product repo or mission notes.
+
+**Gate:** CEO release gate before declaring MVP live.
+
+## Phase 8 — Validation and Learning (Revenue Missions)
+
+**Input:** Production MVP in use on real conversations.
+
+**Actions:**
+1. Capture usage on real prospect conversations (Revenue gate).
+2. Document evidence in product repo `docs/VALIDATION.md` (Validation gate).
+3. Emit structured outcome and learning events per architecture contracts.
+4. Feed learning worker; propose product improvements from signals.
+
+**Output:** Validation report; learning events; mission validation criteria satisfied.
+
+**Gate:** Mission cannot close until Revenue + Validation criteria pass. Next major product mission blocked until then (`AION_ENGINEERING.md` — Sequential Mission Governance).
 
 ## Handoff Checklist (All Agents)
 

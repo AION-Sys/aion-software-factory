@@ -41,3 +41,12 @@ Prefer AION's established stack unless the Architect documents a reason to devia
 
 ## Agent Collaboration
 Agents must communicate through explicit artifacts: mission files, PRDs, architecture documents, task files, test reports, security reports, and pull requests. Do not rely on hidden conversational state.
+
+## Sequential Mission Governance
+AION runs **one major revenue-connected product build at a time** until its validation gate is met.
+
+- A mission is not validated at deploy — it is validated when **real usage produces evidence** (economic signal, workflow improvement, learning events).
+- The next major product mission (e.g., Mission 003) **cannot begin** until the active mission's validation acceptance criteria are satisfied or the mission is explicitly cancelled with CEO approval.
+- Factory-only missions (process, templates, tooling) may proceed in parallel if they do not split Builder focus from the active product mission.
+
+This prevents the factory from becoming a machine for generating unfinished software.

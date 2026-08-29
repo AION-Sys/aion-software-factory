@@ -6,7 +6,8 @@ Missions are scoped units of work with explicit acceptance criteria and CEO appr
 
 | ID | Title | Status |
 |----|-------|--------|
-| [MISSION-001](MISSION-001.md) | AION Software Factory Bootstrap | ACTIVE — FOUNDATION |
+| [MISSION-001](MISSION-001.md) | AION Software Factory Bootstrap | COMPLETE |
+| [MISSION-002](MISSION-002.md) | AION Revenue Conversion Copilot | ACTIVE — VALIDATION → MVP |
 
 ## Creating a New Mission
 
@@ -33,3 +34,13 @@ When all acceptance criteria are satisfied:
 1. Check off criteria in the mission file.
 2. Set status to `COMPLETE`.
 3. Document follow-up in **Next Mission**.
+
+## Sequential Mission Governance
+
+**One major product build at a time.** A new revenue-connected mission (e.g., Mission 003) cannot start until the active mission reaches its **validation gate** — not merely "deployed."
+
+For Mission 002, validation requires:
+- Product used on real prospect conversations
+- Evidence collected in the product repo (`docs/VALIDATION.md`)
+
+See `AION_ENGINEERING.md` for the full rule.
