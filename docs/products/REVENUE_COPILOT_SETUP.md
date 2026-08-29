@@ -31,7 +31,14 @@ After push succeeds, delete `product-seeds/` from `aion-software-factory` (facto
 
 ## Agent access (required for Builder PRs)
 
-Grant **write access** to the Cloud Agent / `cursor[bot]` on `Ceoloo-aion-revenue-copilot` so Builder agents can open PRs without manual pushes.
+Adding `cursor[bot]` as a collaborator is **not sufficient** for Cloud Agents. You must also grant the **Cursor GitHub App** access to this repository:
+
+1. GitHub → **Settings** → **Applications** → **Installed GitHub Apps**
+2. Click **Cursor** → **Configure**
+3. Under **Repository access**, add **`Ceoloo-aion-revenue-copilot`** (or enable all repositories)
+4. Save — then reply here so the agent can push
+
+Org owners may need to approve third-party app access for new repos.
 
 ## Secrets (before production)
 
