@@ -3,46 +3,37 @@
 ## Repository (live)
 **https://github.com/Ceoloo/Ceoloo-aion-revenue-copilot**
 
-Mission 002 application code lives in this repo — not in the factory.
+## Agent access — still required
 
-## Publish bootstrap (one-time)
+Cloud Agent push returns **403** until the **Cursor GitHub App** has write access to this repo.
 
-The factory seed at `product-seeds/aion-revenue-copilot/` must be pushed to the product repo once. The repo currently contains only the default GitHub README.
+For **org repos**, configure at:
+**https://github.com/organizations/Ceoloo/settings/installations**
 
-From a machine with **push access** to `Ceoloo/Ceoloo-aion-revenue-copilot`:
+1. Open **Cursor** → **Configure**
+2. Add **`Ceoloo-aion-revenue-copilot`** under Repository access (or all repos)
+3. Org owner may need to approve
+
+Personal settings (`github.com/settings/installations`) do not apply to `Ceoloo/*` org repos.
+
+## Manual push (if agent access is delayed)
+
+Bootstrap + Task 1 (Supabase schema) are in `product-seeds/aion-revenue-copilot/`:
 
 ```bash
 git clone https://github.com/Ceoloo/Ceoloo-aion-revenue-copilot.git
 cd Ceoloo-aion-revenue-copilot
-
-# Copy seed from factory clone (or use product-seeds/ in aion-software-factory)
 cp -r /path/to/aion-software-factory/product-seeds/aion-revenue-copilot/* .
 cp -r /path/to/aion-software-factory/product-seeds/aion-revenue-copilot/.[!.]* . 2>/dev/null || true
-
-npm install
-npm run lint && npm run typecheck && npm test && npm run build
-
-git add -A
-git commit -m "feat: bootstrap Mission 002 Revenue Conversion Copilot"
-git push origin main
+npm install && npm run lint && npm run typecheck && npm test && npm run build
+git checkout -b cursor/supabase-schema-rls-be3c
+git add -A && git commit -m "feat: bootstrap + Supabase schema (Task 1)"
+git push -u origin cursor/supabase-schema-rls-be3c
+# Also push main if repo is still empty README-only:
+git checkout main && git merge cursor/supabase-schema-rls-be3c && git push origin main
 ```
 
-After push succeeds, delete `product-seeds/` from `aion-software-factory` (factory stays governance-only).
-
-## Agent access (required for Builder PRs)
-
-Adding `cursor[bot]` as a collaborator is **not sufficient** for Cloud Agents. You must also grant the **Cursor GitHub App** access to this repository:
-
-1. GitHub → **Settings** → **Applications** → **Installed GitHub Apps**
-2. Click **Cursor** → **Configure**
-3. Under **Repository access**, add **`Ceoloo-aion-revenue-copilot`** (or enable all repositories)
-4. Save — then reply here so the agent can push
-
-Org owners may need to approve third-party app access for new repos.
-
 ## Secrets (before production)
-
-Configure in GitHub repo settings → Secrets, plus Vercel/Supabase:
 
 | Secret | Purpose |
 |--------|---------|
@@ -54,6 +45,6 @@ Configure in GitHub repo settings → Secrets, plus Vercel/Supabase:
 | `AION_EVENTS_INGEST_URL` | Learning events |
 | `AION_EVENTS_API_KEY` | Event ingest auth |
 
-## Next Builder tasks
+## Next Builder task
 
-See product repo `docs/ARCHITECTURE.md` — start with **Task 1: Supabase schema + RLS**.
+Task 2 — Auth + rep session (after Task 1 PR merges).

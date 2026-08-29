@@ -1,7 +1,7 @@
 # Data Model — AION Revenue Conversion Copilot
 
 ## Status
-DRAFT — implement in Supabase migration (Task 1)
+IMPLEMENTED — migration `supabase/migrations/20260829200000_initial_schema.sql`
 
 ## Overview
 Relational model in Postgres (Supabase) for leads, business context, calls, outcomes, and event audit trail.
