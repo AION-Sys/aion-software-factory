@@ -31,11 +31,18 @@ Every agent handoff should state:
 - whether human approval is required.
 
 ## Roles
-- `AION-PM`: converts CEO objectives into scoped product missions and acceptance criteria.
-- `AION-ARCHITECT`: converts approved product requirements into technical architecture and implementation tasks.
-- `AION-BUILDER`: implements approved technical tasks and produces a reviewable pull request.
-- `AION-QA`: verifies behavior against acceptance criteria and reports failures.
-- `AION-SECURITY`: reviews security-sensitive changes and identifies material risks.
+
+Each role uses templates in `docs/templates/` and follows `docs/workflows/END_TO_END.md`.
+
+| Role | Delivers | Template |
+|------|----------|----------|
+| `AION-PM` | Mission + PRD | `MISSION.template.md`, `PRD.template.md` |
+| `AION-ARCHITECT` | Architecture + tasks | `ARCHITECTURE.template.md`, `TASK.template.md` |
+| `AION-BUILDER` | Pull request + tests | Product repo PR template |
+| `AION-QA` | Verification report | `QA_REPORT.template.md` |
+| `AION-SECURITY` | Security review (when triggered) | `SECURITY_REVIEW.template.md` |
+
+Standards: `docs/standards/TESTING.md`, `docs/standards/SECURITY.md`. Product repo layout: `docs/architecture/OVERVIEW.md`.
 
 ## CEO Escalation
 Escalate when a decision changes product scope, creates material cost, introduces significant security risk, requires irreversible action, or cannot be resolved from repository documentation and the active mission.

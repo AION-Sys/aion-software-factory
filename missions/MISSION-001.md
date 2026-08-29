@@ -24,13 +24,13 @@ The repository becomes the source of truth for AION's software-development workf
 - Building a SaaS product solely to demonstrate the factory.
 
 ## Acceptance Criteria
-- [ ] `AION_ENGINEERING.md` exists and defines engineering, security, testing, and approval rules.
-- [ ] `AGENTS.md` exists and defines the agent operating contract.
-- [ ] Agent roles are explicitly defined.
-- [ ] Mission artifacts use a repeatable structure.
-- [ ] Human approval boundaries are explicit.
-- [ ] A first product mission can be created from this template without redesigning the repository.
-- [ ] The next mission can be executed through PM → Architect → Builder → QA → Security → Human Approval.
+- [x] `AION_ENGINEERING.md` exists and defines engineering, security, testing, and approval rules.
+- [x] `AGENTS.md` exists and defines the agent operating contract.
+- [x] Agent roles are explicitly defined.
+- [x] Mission artifacts use a repeatable structure (`docs/templates/`, `missions/README.md`).
+- [x] Human approval boundaries are explicit.
+- [x] A first product mission can be created from this template without redesigning the repository.
+- [x] The next mission can be executed through PM → Architect → Builder → QA → Security → Human Approval (`docs/workflows/END_TO_END.md`).
 
 ## Success Metric
 AION can take one real product idea and produce a reviewable implementation workflow without the CEO manually writing every development task or line of code.
