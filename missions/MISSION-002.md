@@ -96,9 +96,9 @@ Demonstrate the full loop once:
 Evidence includes: real usage on prospect conversations, structured outcome/learning events, and documented validation findings in the product repo (`docs/VALIDATION.md`).
 
 ## Product Repository
-https://github.com/Ceoloo/aion-revenue-copilot
+https://github.com/Ceoloo/Ceoloo-aion-revenue-copilot
 
-Bootstrap seed (until repo is created): [`product-seeds/aion-revenue-copilot/`](../product-seeds/aion-revenue-copilot/) — see [`docs/products/REVENUE_COPILOT_SETUP.md`](../docs/products/REVENUE_COPILOT_SETUP.md).
+Bootstrap publish: [`docs/products/REVENUE_COPILOT_SETUP.md`](../docs/products/REVENUE_COPILOT_SETUP.md) (seed in `product-seeds/` until initial push completes).
 
 ## Standard Stack
 - **Application:** Next.js / TypeScript
@@ -151,7 +151,7 @@ AION SOFTWARE FACTORY
 
 ## Dependencies
 - Mission 001 complete (factory foundation)
-- Product repo `aion-revenue-copilot` bootstrapped
+- Product repo `Ceoloo-aion-revenue-copilot` created; bootstrap push pending
 - AION AI Gateway access (product repo secrets)
 - AION event/learning infrastructure endpoints (Architect to document contracts)
 - Supabase project for product data (human-approved provisioning)
