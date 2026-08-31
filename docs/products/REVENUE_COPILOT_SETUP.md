@@ -52,6 +52,10 @@ Delete `product-seeds/aion-revenue-copilot/` from `aion-software-factory` in a f
 - CI workflow (lint, typecheck, test, build)
 - Verified locally: all quality checks pass
 
+## Go-Live Checklist
+
+Full step-by-step: [`REVENUE_COPILOT_GO_LIVE.md`](REVENUE_COPILOT_GO_LIVE.md)
+
 ## Next Builder Tasks
 
-See `product-seeds/aion-revenue-copilot/docs/ARCHITECTURE.md` task table — start with Supabase schema + auth (Tasks 1–2).
+See `product-seeds/aion-revenue-copilot/docs/ARCHITECTURE.md` task table — **Task 1 (schema + RLS) is in the seed**; next PR is Task 2 (auth + rep session).

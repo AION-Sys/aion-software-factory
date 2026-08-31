@@ -1,7 +1,7 @@
 # Data Model — AION Revenue Conversion Copilot
 
 ## Status
-DRAFT — implement in Supabase migration (Task 1)
+IMPLEMENTED — migration in `supabase/migrations/20250831000000_initial_schema.sql` (apply via Supabase CLI or SQL Editor)
 
 ## Overview
 Relational model in Postgres (Supabase) for leads, business context, calls, outcomes, and event audit trail.
@@ -59,12 +59,16 @@ Relational model in Postgres (Supabase) for leads, business context, calls, outc
 | Column | Type | Notes |
 |--------|------|-------|
 | id | uuid PK | |
+| organization_id | uuid FK | Tenant boundary (RLS) |
 | call_id | uuid FK | nullable |
 | lead_id | uuid FK | nullable |
 | event_type | text | crm, learning |
 | payload | jsonb | |
 | external_id | text | nullable — ingest ack |
 | created_at | timestamptz | |
+
+### `organizations` / `organization_members`
+Tenant tables for multi-org RLS. See migration for full column definitions.
 
 ## TypeScript Mapping
 Domain types live in `lib/sales/types.ts`. Keep DB columns aligned with those types.
@@ -105,9 +109,11 @@ Domain types live in `lib/sales/types.ts`. Keep DB columns aligned with those ty
 ```
 
 ## Migration Order
-1. organizations (if not shared auth tenant table)
+1. organizations + organization_members
 2. business_contexts
 3. leads
 4. calls
 5. call_outcomes
 6. event_log
+
+See `supabase/README.md` for apply instructions.
