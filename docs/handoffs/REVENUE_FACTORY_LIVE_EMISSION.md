@@ -1,7 +1,23 @@
 # Handoff — Revenue Factory live `lead.qualified` telemetry
 
 ## Status
-**PATCH READY** — apply from this repo. Agent push to `AION-Revenue-Factory` still returns **403** for `cursor[bot]` as of last check; use CEO credentials or grant the bot write access.
+**APPLIED LOCALLY — PUSH BLOCKED** — Cloud Agent applied the patch on `AION-Revenue-Factory` `main` (`f237b0c`), installed `.[dev]`, and ran pytest. **67 passed.** `git push -u origin feat/live-lead-qualified-telemetry` still returns **403** for `cursor[bot]`.
+
+Use CEO credentials to push the local commit, or grant the bot write access and re-run the apply.
+
+## Apply verification (2026-08-31)
+
+| Step | Result |
+|------|--------|
+| Clone `AION-Sys/AION-Revenue-Factory` | OK (`main` @ `f237b0c`) |
+| `git apply` patch `0001-feat-live-lead.qualified-telemetry-to-health-aggrega.patch` | OK (`git apply --check` clean) |
+| `pip install -e ".[dev]"` | OK |
+| `python3 -m pytest -q` | **67 passed**, 0 failed (0.50s) |
+| Branch `feat/live-lead-qualified-telemetry` | Created locally |
+| Commit `feat: live lead.qualified telemetry to health aggregator` | Local SHA `f74924f` |
+| `git push -u origin feat/live-lead-qualified-telemetry` | **403** — `Permission to AION-Sys/AION-Revenue-Factory.git denied to cursor[bot]` |
+
+Local clone (agent VM, not on GitHub): `/home/ubuntu/AION-Revenue-Factory` on `feat/live-lead-qualified-telemetry`.
 
 ## Apply (human or bot with write access)
 
@@ -50,6 +66,8 @@ company-os PR #20 may contain the canonical copy; this factory mirror is ready t
 ## Unblock agent push
 
 Grant **`cursor[bot]`** write access on `AION-Sys/AION-Revenue-Factory` (Settings → Collaborators or org team). Personal CEO access does not apply to the Cloud Agent token.
+
+Re-verified 2026-08-31: apply + tests succeed; only the push is blocked. After write access, re-run the apply block below (or cherry-pick local `f74924f` if the clone is still available).
 
 ## Mission linkage
 
