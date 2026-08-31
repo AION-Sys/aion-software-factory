@@ -151,9 +151,9 @@ AION SOFTWARE FACTORY
 
 ## Dependencies
 - Mission 001 complete (factory foundation)
-- [x] Product repo `Ceoloo-aion-revenue-copilot` created ([AION-Sys/Ceoloo-aion-revenue-copilot](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot)) — publish seed pending
+- [x] Product repo `Ceoloo-aion-revenue-copilot` created ([AION-Sys/Ceoloo-aion-revenue-copilot](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot)) — seed published
 - AION AI Gateway access (product repo secrets)
-- AION event/learning infrastructure endpoints (Architect to document contracts)
+- AION event/learning infrastructure endpoints — apply [`docs/handoffs/patches/0001-feat-live-lead.qualified-telemetry-to-health-aggrega.patch`](../docs/handoffs/patches/0001-feat-live-lead.qualified-telemetry-to-health-aggrega.patch) to Revenue Factory (see handoff doc)
 - Supabase project for product data (human-approved provisioning)
 
 ## Governance — Mission 003 Block

@@ -1,0 +1,252 @@
+From 462228ad51fd8748c2392328465d283af5f80c3a Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Mon, 31 Aug 2026 18:10:36 +0000
+Subject: [PATCH] feat: live lead.qualified telemetry to health aggregator
+
+- Add FilteredSink and CompositeSink for fan-out telemetry
+- Wire AION_HEALTH_AGGREGATOR_URL for lead.qualified only
+- Document live emission runbook under docs/migration/
+---
+ .../REVENUE_FACTORY_LIVE_EMISSION.md          | 48 +++++++++++++++++++
+ src/aion_revenue_factory/config.py            | 42 ++++++++++++----
+ .../integrations/__init__.py                  | 11 ++++-
+ .../integrations/event_sink.py                | 23 +++++++++
+ tests/test_event_sink.py                      | 39 +++++++++++++++
+ 5 files changed, 154 insertions(+), 9 deletions(-)
+ create mode 100644 docs/migration/REVENUE_FACTORY_LIVE_EMISSION.md
+ create mode 100644 tests/test_event_sink.py
+
+diff --git a/docs/migration/REVENUE_FACTORY_LIVE_EMISSION.md b/docs/migration/REVENUE_FACTORY_LIVE_EMISSION.md
+new file mode 100644
+index 0000000..642ea9e
+--- /dev/null
++++ b/docs/migration/REVENUE_FACTORY_LIVE_EMISSION.md
+@@ -0,0 +1,48 @@
++# Revenue Factory — live `lead.qualified` telemetry
++
++## Purpose
++
++When qualifying leads in a live run, forward `lead.qualified` envelope events to the
++AION **health aggregator** so Mission 002 validation can observe economic signals
++without breaking offline simulation.
++
++## Environment
++
++| Variable | Required | Purpose |
++|----------|----------|---------|
++| `AION_TELEMETRY_URL` | No | POST all envelope events (event spine) |
++| `AION_TELEMETRY_KEY` | No | Bearer token for telemetry |
++| `AION_HEALTH_AGGREGATOR_URL` | No | POST **only** `lead.qualified` events |
++| `AION_HEALTH_AGGREGATOR_KEY` | No | Bearer token for health aggregator |
++
++Offline default unchanged: no env vars → `NullSink` (no network I/O).
++
++## Wiring
++
++`build_factory_from_env()` composes sinks:
++
++- `AION_TELEMETRY_URL` → all events via `HttpTelemetrySink`
++- `AION_HEALTH_AGGREGATOR_URL` → `FilteredSink(..., {"lead.qualified"})`
++- Both set → `CompositeSink` fan-out
++
++Transport failures are captured in `HttpTelemetrySink.failures` and **never**
++propagate into the revenue workflow.
++
++## Verify (staging)
++
++```bash
++export AION_HEALTH_AGGREGATOR_URL=https://<staging-health-aggregator>/ingest
++export AION_HEALTH_AGGREGATOR_KEY=<staging-key>   # if required
++python -m pytest -q
++python -m aion_revenue_factory.cli run-day --prospects 5   # or project entrypoint
++# Confirm lead.qualified envelopes in aggregator logs
++```
++
++## Rollback
++
++Unset `AION_HEALTH_AGGREGATOR_URL` / `AION_TELEMETRY_URL` and redeploy. No schema
++changes.
++
++## Approval
++
++Live production URLs require CEO release gate (Mission 002).
+diff --git a/src/aion_revenue_factory/config.py b/src/aion_revenue_factory/config.py
+index 33a5c88..20024b5 100644
+--- a/src/aion_revenue_factory/config.py
++++ b/src/aion_revenue_factory/config.py
+@@ -21,8 +21,10 @@ Outreach email:
+ Outreach webhook:
+     AION_OUTREACH_WEBHOOK_URL [+ AION_OUTREACH_WEBHOOK_KEY]
+ Telemetry (AION events):
+-    AION_TELEMETRY_URL       -> POST envelope events to this endpoint
++    AION_TELEMETRY_URL       -> POST all envelope events to this endpoint
+     AION_TELEMETRY_KEY       -> its bearer token (optional)
++    AION_HEALTH_AGGREGATOR_URL -> POST ``lead.qualified`` events to health aggregator
++    AION_HEALTH_AGGREGATOR_KEY -> its bearer token (optional)
+ """
+ 
+ from __future__ import annotations
+@@ -92,14 +94,31 @@ def _build_sender(env: dict, crm):
+ 
+ 
+ def _build_event_sink(env: dict):
+-    if env.get("AION_TELEMETRY_URL"):
+-        from .integrations.event_sink import HttpTelemetrySink
++    from .integrations.event_sink import CompositeSink, FilteredSink, HttpTelemetrySink
+ 
+-        return HttpTelemetrySink(
+-            env["AION_TELEMETRY_URL"],
+-            api_key=env.get("AION_TELEMETRY_KEY"),
++    sinks = []
++    if env.get("AION_TELEMETRY_URL"):
++        sinks.append(
++            HttpTelemetrySink(
++                env["AION_TELEMETRY_URL"],
++                api_key=env.get("AION_TELEMETRY_KEY"),
++            )
++        )
++    if env.get("AION_HEALTH_AGGREGATOR_URL"):
++        sinks.append(
++            FilteredSink(
++                HttpTelemetrySink(
++                    env["AION_HEALTH_AGGREGATOR_URL"],
++                    api_key=env.get("AION_HEALTH_AGGREGATOR_KEY"),
++                ),
++                frozenset({"lead.qualified"}),
++            )
+         )
+-    return None  # -> NullSink (offline)
++    if not sinks:
++        return None  # -> NullSink (offline)
++    if len(sinks) == 1:
++        return sinks[0]
++    return CompositeSink(sinks)
+ 
+ 
+ def build_factory_from_env(env: dict | None = None, **kwargs) -> RevenueFactory:
+@@ -137,10 +156,17 @@ def describe_wiring(env: dict | None = None) -> dict:
+         outreach = "smtp"
+     else:
+         outreach = "no-op (offline)"
++    telemetry_parts = []
++    if env.get("AION_TELEMETRY_URL"):
++        telemetry_parts.append("event_spine")
++    if env.get("AION_HEALTH_AGGREGATOR_URL"):
++        telemetry_parts.append("health_aggregator(lead.qualified)")
++    telemetry = "http:" + "+".join(telemetry_parts) if telemetry_parts else "off (offline)"
++
+     return {
+         "gateway": "anthropic (claude)" if env.get("ANTHROPIC_API_KEY") else "template (offline)",
+         "crm": crm,
+         "prospects": "http_api" if env.get("AION_PROSPECT_URL") else "synthetic (offline)",
+         "outreach": outreach,
+-        "telemetry": "http" if env.get("AION_TELEMETRY_URL") else "off (offline)",
++        "telemetry": telemetry,
+     }
+diff --git a/src/aion_revenue_factory/integrations/__init__.py b/src/aion_revenue_factory/integrations/__init__.py
+index 0a0bb09..94f9977 100644
+--- a/src/aion_revenue_factory/integrations/__init__.py
++++ b/src/aion_revenue_factory/integrations/__init__.py
+@@ -15,7 +15,14 @@ from .aion_events import (
+     validate_event,
+ )
+ from .crm import CRM, InMemoryCRM
+-from .event_sink import CollectingSink, EventSink, HttpTelemetrySink, NullSink
++from .event_sink import (
++    CollectingSink,
++    CompositeSink,
++    EventSink,
++    FilteredSink,
++    HttpTelemetrySink,
++    NullSink,
++)
+ from .knowledge import KnowledgeBase
+ 
+ __all__ = [
+@@ -32,5 +39,7 @@ __all__ = [
+     "EventSink",
+     "NullSink",
+     "CollectingSink",
++    "CompositeSink",
++    "FilteredSink",
+     "HttpTelemetrySink",
+ ]
+diff --git a/src/aion_revenue_factory/integrations/event_sink.py b/src/aion_revenue_factory/integrations/event_sink.py
+index f65605f..5195ffb 100644
+--- a/src/aion_revenue_factory/integrations/event_sink.py
++++ b/src/aion_revenue_factory/integrations/event_sink.py
+@@ -68,3 +68,26 @@ class HttpTelemetrySink:
+                 pass
+         except Exception as exc:  # noqa: BLE001 - never break the workflow on telemetry
+             self.failures.append((event.event_id, str(exc)))
++
++
++class FilteredSink:
++    """Forwards only events whose ``event_type`` is in ``event_types``."""
++
++    def __init__(self, inner: EventSink, event_types: frozenset[str]) -> None:
++        self.inner = inner
++        self.event_types = event_types
++
++    def emit(self, event: Event) -> None:
++        if event.event_type in self.event_types:
++            self.inner.emit(event)
++
++
++class CompositeSink:
++    """Fan-out sink — emits to every child without short-circuiting on failure."""
++
++    def __init__(self, sinks: List[EventSink]) -> None:
++        self.sinks = list(sinks)
++
++    def emit(self, event: Event) -> None:
++        for sink in self.sinks:
++            sink.emit(event)
+diff --git a/tests/test_event_sink.py b/tests/test_event_sink.py
+new file mode 100644
+index 0000000..9e33778
+--- /dev/null
++++ b/tests/test_event_sink.py
+@@ -0,0 +1,39 @@
++"""Event sink composition for live telemetry wiring."""
++
++from aion_revenue_factory.integrations.aion_events import new_event
++from aion_revenue_factory.integrations.event_sink import (
++    CollectingSink,
++    CompositeSink,
++    FilteredSink,
++    HttpTelemetrySink,
++)
++
++
++def test_filtered_sink_forwards_matching_events_only():
++    inner = CollectingSink()
++    sink = FilteredSink(inner, frozenset({"lead.qualified"}))
++    sink.emit(new_event("lead.qualified", correlation_id="c1"))
++    sink.emit(new_event("lead.discovered", correlation_id="c1"))
++    assert inner.types() == ["lead.qualified"]
++
++
++def test_composite_sink_fans_out_to_all_children():
++    a = CollectingSink()
++    b = CollectingSink()
++    CompositeSink([a, b]).emit(new_event("lead.qualified", correlation_id="c1"))
++    assert a.types() == ["lead.qualified"]
++    assert b.types() == ["lead.qualified"]
++
++
++def test_http_telemetry_sink_records_transport_failures(monkeypatch):
++    def boom(*args, **kwargs):
++        raise OSError("network down")
++
++    monkeypatch.setattr(
++        "aion_revenue_factory.integrations.event_sink.urllib.request.urlopen",
++        boom,
++    )
++    sink = HttpTelemetrySink("https://telemetry.example/events")
++    ev = new_event("lead.qualified", correlation_id="c1")
++    sink.emit(ev)
++    assert sink.failures == [(ev.event_id, "network down")]
+-- 
+2.43.0
+
