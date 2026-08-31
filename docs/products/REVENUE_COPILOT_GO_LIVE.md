@@ -6,25 +6,24 @@ Use this checklist to move Mission 002 from factory seed → product repo → fi
 
 | Step | Owner | Done |
 |------|-------|------|
-| Approve Mission 002 scope | CEO | [ ] |
-| Create GitHub repo `Ceoloo/aion-revenue-copilot` (public, no README init) | Org admin | [ ] |
+| Approve Mission 002 scope | CEO | [x] |
+| Create GitHub repo [AION-Sys/Ceoloo-aion-revenue-copilot](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot) | Org admin | [x] |
 | Create Supabase project (prod + optional staging) | CEO / infra | [ ] |
 | Confirm AION AI Gateway access + model routing | Architect / platform | [ ] |
 | Confirm AION events ingest URL + API key | Architect / platform | [ ] |
 
 ## Phase 1 — Publish product repo
 
-Run from **aion-software-factory** after pulling latest main:
+Repo exists at **https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot**. Push the factory seed if the remote still only has a placeholder README:
 
 ```bash
+git clone https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot.git /tmp/aion-revenue-copilot
 cd product-seeds/aion-revenue-copilot
-npm install
-npm run lint && npm run typecheck && npm test && npm run build
-git init -b main
-git add -A
-git commit -m "feat: bootstrap Mission 002 Revenue Conversion Copilot"
-git remote add origin git@github.com:Ceoloo/aion-revenue-copilot.git
-git push -u origin main
+npm install && npm run lint && npm run typecheck && npm test && npm run build
+cp -r . /tmp/aion-revenue-copilot/
+cd /tmp/aion-revenue-copilot && rm -rf node_modules .next
+git add -A && git commit -m "feat: bootstrap Mission 002 Revenue Conversion Copilot"
+git push origin main
 ```
 
 Then in GitHub repo settings → **Secrets and variables → Actions**:
@@ -56,7 +55,7 @@ Verify RLS is enabled on all tables (Dashboard → Authentication → Policies).
 
 ## Phase 3 — Vercel (preview first)
 
-1. Import `Ceoloo/aion-revenue-copilot` in Vercel
+1. Import [AION-Sys/Ceoloo-aion-revenue-copilot](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot) in Vercel
 2. Set environment variables (same as GitHub secrets)
 3. Confirm preview deploy succeeds on PR
 4. **Do not** promote to production until CEO release gate
