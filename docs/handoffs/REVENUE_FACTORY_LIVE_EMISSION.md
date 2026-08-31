@@ -14,10 +14,21 @@ Use CEO credentials to push the local commit, or grant the bot write access and 
 | `pip install -e ".[dev]"` | OK |
 | `python3 -m pytest -q` | **67 passed**, 0 failed (0.50s) |
 | Branch `feat/live-lead-qualified-telemetry` | Created locally |
-| Commit `feat: live lead.qualified telemetry to health aggregator` | Local SHA `f74924f` |
+| Commit `feat: live lead.qualified telemetry to health aggregator` | Local SHA `89e4d27` |
 | `git push -u origin feat/live-lead-qualified-telemetry` | **403** — `Permission to AION-Sys/AION-Revenue-Factory.git denied to cursor[bot]` |
 
-Local clone (agent VM, not on GitHub): `/home/ubuntu/AION-Revenue-Factory` on `feat/live-lead-qualified-telemetry`.
+Local clone (agent VM, not on GitHub): `/workspace/AION-Revenue-Factory` on `feat/live-lead-qualified-telemetry`.
+
+### Fast push (CEO credentials)
+
+```bash
+git clone git@github.com:AION-Sys/AION-Revenue-Factory.git
+cd AION-Revenue-Factory
+git pull /path/to/aion-software-factory/docs/handoffs/bundles/live-lead-qualified-telemetry-89e4d27.bundle feat/live-lead-qualified-telemetry
+git push -u origin feat/live-lead-qualified-telemetry
+gh pr create --base main --head feat/live-lead-qualified-telemetry \
+  --title "feat: live lead.qualified telemetry to health aggregator" --draft
+```
 
 ## Apply (human or bot with write access)
 
@@ -44,6 +55,7 @@ git -C AION-Revenue-Factory apply docs/handoffs/patches/0001-feat-live-lead.qual
 |------|---------|
 | [`migration/REVENUE_FACTORY_LIVE_EMISSION.md`](migration/REVENUE_FACTORY_LIVE_EMISSION.md) | Live wiring runbook |
 | [`patches/0001-feat-live-lead.qualified-telemetry-to-health-aggrega.patch`](patches/0001-feat-live-lead.qualified-telemetry-to-health-aggrega.patch) | Code change (67 tests pass when applied) |
+| [`bundles/live-lead-qualified-telemetry-89e4d27.bundle`](bundles/live-lead-qualified-telemetry-89e4d27.bundle) | Pre-built branch for `git pull` when patch already applied |
 
 company-os PR #20 may contain the canonical copy; this factory mirror is ready to apply now.
 
@@ -67,7 +79,7 @@ company-os PR #20 may contain the canonical copy; this factory mirror is ready t
 
 Grant **`cursor[bot]`** write access on `AION-Sys/AION-Revenue-Factory` (Settings → Collaborators or org team). Personal CEO access does not apply to the Cloud Agent token.
 
-Re-verified 2026-08-31: apply + tests succeed; only the push is blocked. After write access, re-run the apply block below (or cherry-pick local `f74924f` if the clone is still available).
+Re-verified 2026-08-31 (bc-01a0592f): apply + **67 tests** succeed; only push/PR on `AION-Revenue-Factory` blocked (`cursor[bot]` has no write). After granting write access, push `feat/live-lead-qualified-telemetry` or use the bundle above.
 
 ## Mission linkage
 
