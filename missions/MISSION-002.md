@@ -144,7 +144,7 @@ AION SOFTWARE FACTORY
 ```
 
 ## CEO Approval Gates
-- [ ] **Mission scope approval** — required before Architect begins material design (this document)
+- [x] **Mission scope approval** — required before Architect begins material design (this document) — approved 2026-08-31
 - [ ] **Production deployment** — required before first production release
 - [ ] **Release gate** — CEO confirms deployment evidence before declaring MVP live
 - [ ] **Validation complete** — CEO reviews `docs/VALIDATION.md` evidence before mission close
