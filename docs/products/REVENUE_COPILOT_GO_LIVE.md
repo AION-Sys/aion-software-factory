@@ -10,7 +10,7 @@ Use this checklist to move Mission 002 from factory seed → product repo → fi
 | Create GitHub repo [AION-Sys/Ceoloo-aion-revenue-copilot](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot) | Org admin | [x] |
 | Create Supabase project (prod + optional staging) | CEO / infra | [ ] |
 | Confirm AION AI Gateway access + model routing | Architect / platform | [ ] |
-| Confirm AION events ingest URL + API key | Architect / platform | [ ] |
+| Confirm AION events ingest URL + API key | Architect / platform | [ ] — see [`docs/handoffs/REVENUE_FACTORY_LIVE_EMISSION.md`](../handoffs/REVENUE_FACTORY_LIVE_EMISSION.md) |
 
 ## Phase 1 — Publish product repo
 
