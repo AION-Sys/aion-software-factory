@@ -96,9 +96,9 @@ Demonstrate the full loop once:
 Evidence includes: real usage on prospect conversations, structured outcome/learning events, and documented validation findings in the product repo (`docs/VALIDATION.md`).
 
 ## Product Repository
-https://github.com/Ceoloo/aion-revenue-copilot
+https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot
 
-Bootstrap seed (until repo is created): [`product-seeds/aion-revenue-copilot/`](../product-seeds/aion-revenue-copilot/) — see [`docs/products/REVENUE_COPILOT_SETUP.md`](../docs/products/REVENUE_COPILOT_SETUP.md).
+Bootstrap seed (sync until published): [`product-seeds/aion-revenue-copilot/`](../product-seeds/aion-revenue-copilot/) — see [`docs/products/REVENUE_COPILOT_SETUP.md`](../docs/products/REVENUE_COPILOT_SETUP.md).
 
 ## Standard Stack
 - **Application:** Next.js / TypeScript
@@ -144,14 +144,14 @@ AION SOFTWARE FACTORY
 ```
 
 ## CEO Approval Gates
-- [ ] **Mission scope approval** — required before Architect begins material design (this document)
+- [x] **Mission scope approval** — required before Architect begins material design (this document) — approved 2026-08-31
 - [ ] **Production deployment** — required before first production release
 - [ ] **Release gate** — CEO confirms deployment evidence before declaring MVP live
 - [ ] **Validation complete** — CEO reviews `docs/VALIDATION.md` evidence before mission close
 
 ## Dependencies
 - Mission 001 complete (factory foundation)
-- Product repo `aion-revenue-copilot` bootstrapped
+- [x] Product repo `Ceoloo-aion-revenue-copilot` created ([AION-Sys/Ceoloo-aion-revenue-copilot](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot)) — publish seed pending
 - AION AI Gateway access (product repo secrets)
 - AION event/learning infrastructure endpoints (Architect to document contracts)
 - Supabase project for product data (human-approved provisioning)

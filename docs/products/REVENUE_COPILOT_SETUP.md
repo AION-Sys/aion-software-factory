@@ -1,34 +1,39 @@
 # Revenue Copilot — Product Repo Setup
 
-Mission 002 product code lives in **`product-seeds/aion-revenue-copilot/`** until the separate GitHub repository is created. This folder is a **one-time bootstrap** — not the long-term home for application code.
+Mission 002 application code lives in **[AION-Sys/Ceoloo-aion-revenue-copilot](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot)**.
 
-## Target Repository
-**https://github.com/Ceoloo/aion-revenue-copilot** (public, matches other AION repos)
+The factory copy in `product-seeds/aion-revenue-copilot/` is kept in sync until the seed is fully published and removed from this repo.
 
-## CEO / Human Action Required
+## Repository
 
-The Cloud Agent token cannot create new GitHub repositories. A human with org admin access must:
+| Item | Value |
+|------|-------|
+| URL | https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot |
+| Status | Created — seed publish pending |
+| Default branch | `main` |
 
-### 1. Create the repository
-- Name: `aion-revenue-copilot`
-- Org: `Ceoloo`
-- Visibility: public
-- Do **not** initialize with README (seed includes full scaffold)
+## Publish seed (one-time)
 
-### 2. Publish the seed
+If the product repo only has a placeholder README, push the factory seed:
 
 ```bash
-cd product-seeds/aion-revenue-copilot
-npm install
-npm run lint && npm run typecheck && npm test && npm run build
-git init -b main
+git clone https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot.git /tmp/aion-revenue-copilot
+cd /workspace/product-seeds/aion-revenue-copilot
+npm install && npm run lint && npm run typecheck && npm test && npm run build
+
+# Copy seed into clone (exclude node_modules, .next)
+cp -r . /tmp/aion-revenue-copilot/
+cd /tmp/aion-revenue-copilot
+rm -rf node_modules .next
 git add -A
 git commit -m "feat: bootstrap Mission 002 Revenue Conversion Copilot"
-git remote add origin git@github.com:Ceoloo/aion-revenue-copilot.git
-git push -u origin main
+git push origin main
 ```
 
-### 3. Configure secrets (before production)
+Or push from a machine with write access to `AION-Sys/Ceoloo-aion-revenue-copilot`.
+
+## Configure secrets (before production)
+
 In GitHub repo settings → Secrets, and Vercel/Supabase as applicable:
 
 | Secret | Purpose |
@@ -41,17 +46,22 @@ In GitHub repo settings → Secrets, and Vercel/Supabase as applicable:
 | `AION_EVENTS_INGEST_URL` | Learning events |
 | `AION_EVENTS_API_KEY` | Event ingest auth |
 
-### 4. Remove seed from factory (after push)
+## After seed is published
+
 Delete `product-seeds/aion-revenue-copilot/` from `aion-software-factory` in a follow-up PR so the factory stays governance-only.
 
 ## What's in the seed
 
 - Next.js 15 + TypeScript scaffold
-- `lib/{ai,intelligence,sales,learning,crm}/` with domain stubs and tests
+- Supabase schema + RLS migration (Task 1)
+- `lib/{ai,intelligence,sales,learning,crm,db}/` with domain stubs, mappers, and tests
 - `docs/{PRD,ARCHITECTURE,DATA_MODEL,VALIDATION}.md`
 - CI workflow (lint, typecheck, test, build)
-- Verified locally: all quality checks pass
+
+## Go-live checklist
+
+Full steps: [`REVENUE_COPILOT_GO_LIVE.md`](REVENUE_COPILOT_GO_LIVE.md)
 
 ## Next Builder Tasks
 
-See `product-seeds/aion-revenue-copilot/docs/ARCHITECTURE.md` task table — start with Supabase schema + auth (Tasks 1–2).
+In the **product repo** — see `docs/ARCHITECTURE.md` task table. Task 1 (schema + RLS) is in the seed; next is Task 2 (auth + rep session).

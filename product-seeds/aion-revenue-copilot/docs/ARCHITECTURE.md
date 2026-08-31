@@ -88,7 +88,7 @@ Builder tasks implement these as small PRs.
 
 | # | Task | Role | Depends |
 |---|------|------|---------|
-| 1 | Supabase schema + RLS | Builder | — |
+| 1 | Supabase schema + RLS | Builder | — ✅ migration + mappers |
 | 2 | Auth + rep session | Builder | 1 |
 | 3 | Pre-call brief UI + API | Builder | 1, 2 |
 | 4 | AI Gateway client (real) | Builder | — |

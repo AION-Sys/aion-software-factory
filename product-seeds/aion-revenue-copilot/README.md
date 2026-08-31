@@ -31,6 +31,8 @@ aion-revenue-copilot/
 │   ├── ARCHITECTURE.md
 │   ├── DATA_MODEL.md
 │   └── VALIDATION.md
+├── supabase/
+│   └── migrations/          # Postgres schema + RLS
 └── .github/workflows/ci.yml
 ```
 

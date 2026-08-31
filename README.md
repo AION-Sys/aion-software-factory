@@ -42,7 +42,7 @@ This repo defines **how** AION builds. Application code lives in separate produc
 
 **[MISSION-001 — Factory Bootstrap](missions/MISSION-001.md)** — Complete.
 
-**[MISSION-002 — Revenue Conversion Copilot](missions/MISSION-002.md)** — Active P0: first Factory → Product → Revenue → Learning validation cycle. Product repo: [aion-revenue-copilot](https://github.com/Ceoloo/aion-revenue-copilot).
+**[MISSION-002 — Revenue Conversion Copilot](missions/MISSION-002.md)** — Active P0: first Factory → Product → Revenue → Learning validation cycle. Product repo: [Ceoloo-aion-revenue-copilot](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot).
 
 ## Competitive Baseline
 
