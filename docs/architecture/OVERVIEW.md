@@ -89,6 +89,10 @@ These patterns match what fast-moving SaaS teams optimize for:
 5. **Reversible changes** — Feature flags, migrations with rollback plans, no big-bang releases without approval.
 6. **Same playbook every product** — Mission 002+ reuses templates; speed comes from repetition, not reinvention.
 
+## Production Development Cycle
+
+Operational readiness levels and the day-to-day Builder → CI → Preview → QA → Release → Validation loop are defined in [`docs/workflows/PRODUCTION_DEVELOPMENT_CYCLE.md`](../workflows/PRODUCTION_DEVELOPMENT_CYCLE.md).
+
 ## What Lives Outside This Repo
 
 - Application runtime, databases, and production credentials

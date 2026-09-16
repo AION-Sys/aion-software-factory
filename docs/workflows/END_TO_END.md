@@ -138,6 +138,10 @@ CEO Objective
 
 **Gate:** Mission cannot close until Revenue + Validation criteria pass. Next major product mission blocked until then (`AION_ENGINEERING.md` — Sequential Mission Governance).
 
+## Production Development Cycle (day-to-day)
+
+For readiness levels (L0–L3), where code lives, and the Builder → Preview → QA → Release loop, see [`PRODUCTION_DEVELOPMENT_CYCLE.md`](PRODUCTION_DEVELOPMENT_CYCLE.md). Mission 002 living board: [`../products/MISSION_002_CYCLE_STATUS.md`](../products/MISSION_002_CYCLE_STATUS.md).
+
 ## Handoff Checklist (All Agents)
 
 Every handoff must include:

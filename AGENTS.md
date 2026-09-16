@@ -43,7 +43,7 @@ Each role uses templates in `docs/templates/` and follows `docs/workflows/END_TO
 | `AION-SECURITY` | Security review (when triggered) | `SECURITY_REVIEW.template.md` |
 | `AION-RELEASE` | Deployment evidence, release checklist, production gate handoff | Product repo release notes / deploy log |
 
-Standards: `docs/standards/TESTING.md`, `docs/standards/SECURITY.md`. Product repo layout: `docs/architecture/OVERVIEW.md`.
+Standards: `docs/standards/TESTING.md`, `docs/standards/SECURITY.md`. Product repo layout: `docs/architecture/OVERVIEW.md`. Full-cycle playbook: `docs/workflows/PRODUCTION_DEVELOPMENT_CYCLE.md`.
 
 ## CEO Escalation
 Escalate when a decision changes product scope, creates material cost, introduces significant security risk, requires irreversible action, or cannot be resolved from repository documentation and the active mission.

@@ -1,10 +1,19 @@
 # Mission 002 — AION Revenue Conversion Copilot
 
 ## Status
-ACTIVE — VALIDATION → MVP
+ACTIVE — BUILD → RELEASE (L1 development cycle READY)
 
 ## Lifecycle
-Validation → MVP
+Build → Release → Validation
+
+## Cycle readiness
+See [`docs/workflows/PRODUCTION_DEVELOPMENT_CYCLE.md`](../docs/workflows/PRODUCTION_DEVELOPMENT_CYCLE.md) and [`docs/products/MISSION_002_CYCLE_STATUS.md`](../docs/products/MISSION_002_CYCLE_STATUS.md).
+
+| Level | Status |
+|-------|--------|
+| L1 Production development full cycle | READY |
+| L2 Production-capable MVP | IN PROGRESS |
+| L3 Validated (mission complete) | NOT STARTED |
 
 ## Priority
 P0
@@ -73,14 +82,14 @@ Mission 002 is **not complete** when the app deploys. It is complete when realit
 ### Build and quality gates
 | Gate | Criterion | Status |
 |------|-----------|--------|
-| **Build** | Production deployment succeeds | [ ] |
-| **Quality** | lint + typecheck + tests + build pass in CI | [ ] |
-| **UX** | Rep can complete pre-call → call → post-call workflow | [ ] |
-| **Context** | Recommendations use stored business/lead context | [ ] |
-| **Intelligence** | Objections, pain, and qualification can be captured | [ ] |
-| **Data** | Outcomes generate structured events | [ ] |
-| **Learning** | Outcome can feed AION learning infrastructure | [ ] |
-| **CRM** | Lead/call state persists correctly | [ ] |
+| **Build** | Production deployment succeeds | [~] Vercel production target live on `main`; CEO release record still required |
+| **Quality** | lint + typecheck + tests + build pass in CI | [x] CI green on product `main` (2026-09-16) |
+| **UX** | Rep can complete pre-call → call → post-call workflow | [~] Pre + during on `main`; post-call open PR #10 |
+| **Context** | Recommendations use stored business/lead context | [~] Pre-call / guidance shipped; confirm live Supabase context |
+| **Intelligence** | Objections, pain, and qualification can be captured | [~] During-call capture merged; post-call form pending merge |
+| **Data** | Outcomes generate structured events | [ ] Tasks 6–8 |
+| **Learning** | Outcome can feed AION learning infrastructure | [ ] Task 8 + Revenue Factory handoff |
+| **CRM** | Lead/call state persists correctly | [~] Schema + auth + calls; Task 7 completes CRM persist |
 
 ### Commercial validation gates (required for mission complete)
 | Gate | Criterion | Status |
@@ -98,7 +107,12 @@ Evidence includes: real usage on prospect conversations, structured outcome/lear
 ## Product Repository
 https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot
 
-Bootstrap seed (sync until published): [`product-seeds/aion-revenue-copilot/`](../product-seeds/aion-revenue-copilot/) — see [`docs/products/REVENUE_COPILOT_SETUP.md`](../docs/products/REVENUE_COPILOT_SETUP.md).
+**Source of truth for application code.** Factory seed retired — [`product-seeds/aion-revenue-copilot/`](../product-seeds/aion-revenue-copilot/) is a stub pointer only.
+
+Setup / go-live / cycle status:
+- [`docs/products/REVENUE_COPILOT_SETUP.md`](../docs/products/REVENUE_COPILOT_SETUP.md)
+- [`docs/products/REVENUE_COPILOT_GO_LIVE.md`](../docs/products/REVENUE_COPILOT_GO_LIVE.md)
+- [`docs/products/MISSION_002_CYCLE_STATUS.md`](../docs/products/MISSION_002_CYCLE_STATUS.md)
 
 ## Standard Stack
 - **Application:** Next.js / TypeScript
@@ -151,10 +165,11 @@ AION SOFTWARE FACTORY
 
 ## Dependencies
 - Mission 001 complete (factory foundation)
-- [x] Product repo `Ceoloo-aion-revenue-copilot` created ([AION-Sys/Ceoloo-aion-revenue-copilot](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot)) — seed published
-- AION AI Gateway access (product repo secrets)
-- AION event/learning infrastructure endpoints — apply [`docs/handoffs/patches/0001-feat-live-lead.qualified-telemetry-to-health-aggrega.patch`](../docs/handoffs/patches/0001-feat-live-lead.qualified-telemetry-to-health-aggrega.patch) to Revenue Factory (see handoff doc)
-- Supabase project for product data (human-approved provisioning)
+- [x] Product repo `Ceoloo-aion-revenue-copilot` created and Builder loop active
+- [x] Vercel project linked (`ceoloo-aion-revenue-copilot`) with Preview + Production environments
+- [ ] AION AI Gateway access confirmed (product repo / Vercel secrets)
+- [ ] AION event/learning infrastructure endpoints live — apply [`docs/handoffs/patches/0001-feat-live-lead.qualified-telemetry-to-health-aggrega.patch`](../docs/handoffs/patches/0001-feat-live-lead.qualified-telemetry-to-health-aggrega.patch) to Revenue Factory (push still 403 for `cursor[bot]`)
+- [ ] Supabase project for product data confirmed (human-approved provisioning)
 
 ## Governance — Mission 003 Block
 **Mission 003 cannot become another major product build until Mission 002 reaches its defined validation gate** (Revenue + Validation acceptance criteria satisfied, or explicitly cancelled with CEO approval).
