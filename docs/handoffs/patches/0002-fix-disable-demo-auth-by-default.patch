@@ -1,0 +1,116 @@
+From 61ed515866a4e94af28ac1330af84fb7f7227674 Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Wed, 16 Sep 2026 03:22:22 +0000
+Subject: [PATCH] fix: disable demo auth by default for production
+
+Demo sign-in now requires ENABLE_DEMO_AUTH=true. Production and default
+paths use Supabase Auth only.
+---
+ .env.example                 |  4 ++--
+ README.md                    |  8 ++++++--
+ app/login/page.tsx           |  2 +-
+ lib/auth/demo.ts             | 11 +++--------
+ tests/unit/demo-auth.test.ts |  4 ++--
+ 5 files changed, 14 insertions(+), 15 deletions(-)
+
+diff --git a/.env.example b/.env.example
+index b1bd5ac..4903cb6 100644
+--- a/.env.example
++++ b/.env.example
+@@ -3,9 +3,9 @@ NEXT_PUBLIC_SUPABASE_URL=
+ NEXT_PUBLIC_SUPABASE_ANON_KEY=
+ SUPABASE_SERVICE_ROLE_KEY=
+ 
+-# Demo / preview rep sign-in (auto-on when Supabase public env is missing)
++# Demo / preview rep sign-in (OFF by default — opt in only for local/preview)
++ENABLE_DEMO_AUTH=false
+ # ENABLE_DEMO_AUTH=true
+-# ENABLE_DEMO_AUTH=false
+ # SEED_REP_EMAIL=rep@demo.local
+ # SEED_REP_PASSWORD=demo-rep-password
+ 
+diff --git a/README.md b/README.md
+index 5037c9a..4d51f07 100644
+--- a/README.md
++++ b/README.md
+@@ -48,14 +48,18 @@ npm run dev
+ 
+ ### Preview / Vercel testing without Supabase
+ 
+-**Demo rep auth is on by default** for MVP testing:
++**Demo rep auth is off by default.** Opt in only for local/preview:
++
++```bash
++ENABLE_DEMO_AUTH=true
++```
+ 
+ | Field | Value |
+ |-------|--------|
+ | Email | `rep@demo.local` |
+ | Password | `demo-rep-password` |
+ 
+-Sign in at `/login`, then open the Acme HVAC lead for pre-call → call guidance. Set `ENABLE_DEMO_AUTH=false` once real Supabase Auth should be the only path. Optional: `npm run seed:preview` seeds the same credentials into Supabase.
++With demo auth enabled, sign in at `/login`, then open the Acme HVAC lead for pre-call → call guidance. Production must use Supabase Auth (`ENABLE_DEMO_AUTH=false` or unset). Optional: `npm run seed:preview` seeds rep credentials into Supabase.
+ 
+ ## Quality Checks
+ 
+diff --git a/app/login/page.tsx b/app/login/page.tsx
+index 538c1d5..3c7776b 100644
+--- a/app/login/page.tsx
++++ b/app/login/page.tsx
+@@ -78,7 +78,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
+ 
+         <p className="text-center text-xs text-muted-foreground">
+           {demoCredentials
+-            ? "Demo mode is on for MVP testing. Disable with ENABLE_DEMO_AUTH=false when Supabase Auth is ready."
++            ? "Demo mode is enabled for this environment (ENABLE_DEMO_AUTH=true)."
+             : "Need access? Contact your organization admin to provision a rep account."}
+         </p>
+         <div className="text-center">
+diff --git a/lib/auth/demo.ts b/lib/auth/demo.ts
+index 32a6e3f..bdef2a6 100644
+--- a/lib/auth/demo.ts
++++ b/lib/auth/demo.ts
+@@ -15,20 +15,15 @@ export const DEMO_REP_EMAIL_DEFAULT = "rep@demo.local";
+ export const DEMO_REP_PASSWORD_DEFAULT = "demo-rep-password";
+ 
+ /**
+- * Demo auth is on by default for MVP validation testing.
+- * Set ENABLE_DEMO_AUTH=false to disable once real Supabase Auth is the only path.
+- * Explicit true/1 also enables it.
++ * Demo auth is off by default. Enable only for local/preview testing with
++ * ENABLE_DEMO_AUTH=true (or 1). Production must use Supabase Auth.
+  */
+ export function isDemoAuthEnabled(): boolean {
+   const flag = process.env.ENABLE_DEMO_AUTH?.trim().toLowerCase();
+-  if (flag === "false" || flag === "0") {
+-    return false;
+-  }
+   if (flag === "true" || flag === "1") {
+     return true;
+   }
+-  // Default on for preview/MVP testing (including when Supabase is configured).
+-  return true;
++  return false;
+ }
+ 
+ export function getDemoCredentials(): { email: string; password: string } {
+diff --git a/tests/unit/demo-auth.test.ts b/tests/unit/demo-auth.test.ts
+index dae5bcb..c27772e 100644
+--- a/tests/unit/demo-auth.test.ts
++++ b/tests/unit/demo-auth.test.ts
+@@ -12,9 +12,9 @@ afterEach(() => {
+ });
+ 
+ describe("demo auth", () => {
+-  it("is enabled by default for MVP testing", () => {
++  it("is disabled by default", () => {
+     vi.stubEnv("ENABLE_DEMO_AUTH", "");
+-    expect(isDemoAuthEnabled()).toBe(true);
++    expect(isDemoAuthEnabled()).toBe(false);
+   });
+ 
+   it("respects ENABLE_DEMO_AUTH=false", () => {
+-- 
+2.43.0
+
