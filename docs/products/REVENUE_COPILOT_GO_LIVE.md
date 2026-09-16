@@ -11,10 +11,11 @@ Full-cycle playbook: [`../workflows/PRODUCTION_DEVELOPMENT_CYCLE.md`](../workflo
 |------|-------|------|
 | Approve Mission 002 scope | CEO | [x] |
 | Create GitHub repo [AION-Sys/Ceoloo-aion-revenue-copilot](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot) | Org admin | [x] |
-| Create Supabase project (prod + optional staging) | CEO / infra | [ ] — confirm applied |
-| Confirm AION AI Gateway access + model routing | Architect / platform | [ ] |
+| Create Supabase project (prod + optional staging) | CEO / infra | [ ] — public URL **not** detected in prod client build (2026-09-16) |
+| Confirm AION AI Gateway access + model routing | Architect / platform | [ ] — see [`../handoffs/SECRETS_AND_DEMO_AUTH.md`](../handoffs/SECRETS_AND_DEMO_AUTH.md) |
 | Confirm AION events ingest URL + API key | Architect / platform | [ ] — see [`../handoffs/REVENUE_FACTORY_LIVE_EMISSION.md`](../handoffs/REVENUE_FACTORY_LIVE_EMISSION.md) |
 | Link Vercel project to product repo | CEO / infra | [x] — `ceoloo-aion-revenue-copilot` |
+| Disable demo auth on production | CEO / Builder | [ ] — patch ready; prod still shows demo login |
 
 ## Phase 1 — Product repo (published)
 

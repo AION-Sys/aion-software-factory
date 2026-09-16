@@ -58,14 +58,16 @@ Also merged: demo rep sign-in (PR #11), dashboard shell (PR #13).
 | GitHub product repo | Live |
 | Vercel project | `ceoloo-aion-revenue-copilot` / team `ceoloos-projects` |
 | GitHub Environments | Preview + Production present |
-| Supabase project | Confirm with CEO/infra (secrets not readable by agents) |
-| AI Gateway + events secrets | Confirm on Vercel/GitHub |
+| Demo auth on production | **Still ON** (verified `/login` 2026-09-16) — disable patch ready in handoff |
+| Supabase public env on Vercel | **Likely unset** — no `*.supabase.co` in production client bundles |
+| AI Gateway + events secrets | Unconfirmed — list blocked without Composio/GitHub secrets scope |
 | Revenue Factory telemetry push | Blocked — `cursor[bot]` 403; see handoff |
+| Secrets + demo-auth handoff | [`docs/handoffs/SECRETS_AND_DEMO_AUTH.md`](../handoffs/SECRETS_AND_DEMO_AUTH.md) |
 
 ## CEO / human actions (unblock L2 → L3)
 
-1. Merge or close product [PR #10](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot/pull/10); close stale [PR #2](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot/pull/2).
-2. Confirm Supabase + env secrets; turn off demo auth when ready.
+1. **Secrets + demo auth:** follow [`docs/handoffs/SECRETS_AND_DEMO_AUTH.md`](../handoffs/SECRETS_AND_DEMO_AUTH.md) — set Vercel/GitHub secrets, apply disable-demo-auth patch (or grant `cursor[bot]` write), redeploy.
+2. Merge or close product [PR #10](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot/pull/10); close stale [PR #2](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot/pull/2).
 3. Grant write access or push Revenue Factory telemetry branch (handoff).
 4. Security review + CEO production/release gate + release record.
 5. Run real prospect conversations → fill `docs/VALIDATION.md` → validation sign-off.
