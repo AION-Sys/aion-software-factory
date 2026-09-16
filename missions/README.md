@@ -7,7 +7,7 @@ Missions are scoped units of work with explicit acceptance criteria and CEO appr
 | ID | Title | Status |
 |----|-------|--------|
 | [MISSION-001](MISSION-001.md) | AION Software Factory Bootstrap | COMPLETE |
-| [MISSION-002](MISSION-002.md) | AION Revenue Conversion Copilot | ACTIVE — VALIDATION → MVP |
+| [MISSION-002](MISSION-002.md) | AION Revenue Conversion Copilot | ACTIVE — BUILD → RELEASE (L1 READY) |
 
 ## Creating a New Mission
 

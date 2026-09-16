@@ -8,20 +8,24 @@ The operating foundation for AION's agent-driven software development: missions,
 2. Read [`AGENTS.md`](AGENTS.md) — agent contract and roles.
 3. Check [`missions/`](missions/) for the active mission.
 4. Follow [`docs/workflows/END_TO_END.md`](docs/workflows/END_TO_END.md) for delivery phases.
+5. For day-to-day production development: [`docs/workflows/PRODUCTION_DEVELOPMENT_CYCLE.md`](docs/workflows/PRODUCTION_DEVELOPMENT_CYCLE.md).
 
 ## Repository Structure
 
 ```
 aion-software-factory/
 ├── AION_ENGINEERING.md      # Engineering constitution
-├── AGENTS.md                  # Agent operating contract
-├── missions/                  # Scoped work with acceptance criteria
+├── AGENTS.md                # Agent operating contract
+├── missions/                # Scoped work with acceptance criteria
 ├── docs/
-│   ├── architecture/          # Factory & product-repo conventions
-│   ├── workflows/             # End-to-end delivery process
-│   ├── standards/             # Testing & security baselines
-│   └── templates/             # Mission, PRD, architecture, QA, security
-└── .github/                   # PR and issue templates
+│   ├── architecture/        # Factory & product-repo conventions
+│   ├── workflows/           # End-to-end + production development cycle
+│   ├── standards/           # Testing & security baselines
+│   ├── products/            # Mission 002 status, setup, go-live
+│   ├── handoffs/            # Cross-repo apply packages
+│   └── templates/           # Mission, PRD, architecture, QA, security, release
+├── product-seeds/           # Retired stubs after product repos publish
+└── .github/                 # PR and issue templates
 ```
 
 ## Agent Roles
@@ -33,6 +37,7 @@ aion-software-factory/
 | **AION-BUILDER** | Implementation and pull requests |
 | **AION-QA** | Verification against acceptance criteria |
 | **AION-SECURITY** | Review for security-sensitive changes |
+| **AION-RELEASE** | Deploy evidence, release record, CEO production gate handoff |
 
 ## Product Repositories
 
@@ -42,7 +47,9 @@ This repo defines **how** AION builds. Application code lives in separate produc
 
 **[MISSION-001 — Factory Bootstrap](missions/MISSION-001.md)** — Complete.
 
-**[MISSION-002 — Revenue Conversion Copilot](missions/MISSION-002.md)** — Active P0: first Factory → Product → Revenue → Learning validation cycle. Product repo: [Ceoloo-aion-revenue-copilot](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot).
+**[MISSION-002 — Revenue Conversion Copilot](missions/MISSION-002.md)** — Active P0.  
+**L1 production development full cycle: READY.** L2 MVP / L3 validation still open.  
+Product repo: [Ceoloo-aion-revenue-copilot](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot) · Status: [`docs/products/MISSION_002_CYCLE_STATUS.md`](docs/products/MISSION_002_CYCLE_STATUS.md)
 
 ## Competitive Baseline
 

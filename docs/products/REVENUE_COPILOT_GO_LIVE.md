@@ -1,32 +1,30 @@
 # Revenue Copilot — Go-Live Checklist
 
-Use this checklist to move Mission 002 from factory seed → product repo → first Builder PRs.
+Move Mission 002 through **L1 development cycle → L2 production MVP → L3 validation**.
 
-## Phase 0 — CEO / Human (before Builder scale-up)
+Living board: [`MISSION_002_CYCLE_STATUS.md`](MISSION_002_CYCLE_STATUS.md)  
+Full-cycle playbook: [`../workflows/PRODUCTION_DEVELOPMENT_CYCLE.md`](../workflows/PRODUCTION_DEVELOPMENT_CYCLE.md)
+
+## Phase 0 — CEO / Human
 
 | Step | Owner | Done |
 |------|-------|------|
 | Approve Mission 002 scope | CEO | [x] |
 | Create GitHub repo [AION-Sys/Ceoloo-aion-revenue-copilot](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot) | Org admin | [x] |
-| Create Supabase project (prod + optional staging) | CEO / infra | [ ] |
+| Create Supabase project (prod + optional staging) | CEO / infra | [ ] — confirm applied |
 | Confirm AION AI Gateway access + model routing | Architect / platform | [ ] |
-| Confirm AION events ingest URL + API key | Architect / platform | [ ] — see [`docs/handoffs/REVENUE_FACTORY_LIVE_EMISSION.md`](../handoffs/REVENUE_FACTORY_LIVE_EMISSION.md) |
+| Confirm AION events ingest URL + API key | Architect / platform | [ ] — see [`../handoffs/REVENUE_FACTORY_LIVE_EMISSION.md`](../handoffs/REVENUE_FACTORY_LIVE_EMISSION.md) |
+| Link Vercel project to product repo | CEO / infra | [x] — `ceoloo-aion-revenue-copilot` |
 
-## Phase 1 — Publish product repo
+## Phase 1 — Product repo (published)
 
-Repo exists at **https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot**. Push the factory seed if the remote still only has a placeholder README:
+| Step | Done |
+|------|------|
+| Seed published to product `main` | [x] (PR #3 bootstrap + follow-ons) |
+| GitHub Actions CI (lint/typecheck/test/build) | [x] |
+| Work only in product repo (factory seed retired) | [x] — see [`../../product-seeds/README.md`](../../product-seeds/README.md) |
 
-```bash
-git clone https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot.git /tmp/aion-revenue-copilot
-cd product-seeds/aion-revenue-copilot
-npm install && npm run lint && npm run typecheck && npm test && npm run build
-cp -r . /tmp/aion-revenue-copilot/
-cd /tmp/aion-revenue-copilot && rm -rf node_modules .next
-git add -A && git commit -m "feat: bootstrap Mission 002 Revenue Conversion Copilot"
-git push origin main
-```
-
-Then in GitHub repo settings → **Secrets and variables → Actions**:
+Configure secrets in **GitHub Actions** and **Vercel** (never commit):
 
 | Secret | Required for |
 |--------|----------------|
@@ -38,58 +36,60 @@ Then in GitHub repo settings → **Secrets and variables → Actions**:
 | `AION_EVENTS_INGEST_URL` | Learning pipeline |
 | `AION_EVENTS_API_KEY` | Event ingest auth |
 
-## Phase 2 — Apply database schema
+## Phase 2 — Database schema
 
-In the **product repo** (after publish):
+In the **product repo**:
 
 ```bash
-# Install Supabase CLI if needed: https://supabase.com/docs/guides/cli
 supabase login
 supabase link --project-ref <your-project-ref>
 supabase db push
 ```
 
-Or paste `supabase/migrations/20250831000000_initial_schema.sql` into Supabase SQL Editor.
+Or apply `supabase/migrations/` via SQL Editor / product `npm run db:apply-migration` helper.
 
-Verify RLS is enabled on all tables (Dashboard → Authentication → Policies).
+Verify RLS enabled on all tables.
 
-## Phase 3 — Vercel (preview first)
+## Phase 3 — Vercel
 
-1. Import [AION-Sys/Ceoloo-aion-revenue-copilot](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot) in Vercel
-2. Set environment variables (same as GitHub secrets)
-3. Confirm preview deploy succeeds on PR
-4. **Do not** promote to production until CEO release gate
+| Step | Done |
+|------|------|
+| Import product repo in Vercel | [x] |
+| Preview deploys on PR | [x] |
+| `main` deploys to production target | [x] — mechanical; CEO release gate still required for Mission “MVP live” |
+| Env vars set (same as GitHub secrets) | [ ] — confirm |
+| Demo auth disabled for real-auth-only prod | [ ] when Supabase Auth ready |
 
 ## Phase 4 — Builder task order
 
-From `docs/ARCHITECTURE.md` in the product repo:
+Tracked in product `docs/ARCHITECTURE.md` and [`MISSION_002_CYCLE_STATUS.md`](MISSION_002_CYCLE_STATUS.md):
 
-| # | Task | Status after this PR |
-|---|------|----------------------|
-| 1 | Supabase schema + RLS | ✅ Migration in seed |
-| 2 | Auth + rep session | Next PR |
-| 3 | Pre-call brief UI + API | |
-| 4 | AI Gateway client (real) | |
-| 5 | During-call guidance panel | |
-| 6 | Post-call outcome form | |
-| 7 | CRM persist (Supabase) | |
+| # | Task | Status |
+|---|------|--------|
+| 1 | Supabase schema + RLS | Done |
+| 2 | Auth + rep session | Done |
+| 3 | Pre-call brief UI + API | Done |
+| 4 | AI Gateway client (real) | Done |
+| 5 | During-call guidance panel | Done |
+| 6 | Post-call outcome form | Open PR #10 |
+| 7 | CRM persist (Supabase) | Next |
 | 8 | Learning event ingest (live) | |
 | 9 | E2E critical path tests | |
 | 10 | Production deploy + release record | CEO gate |
 
-## Phase 5 — Factory cleanup (after product repo live)
+## Phase 5 — Factory cleanup
 
-In **aion-software-factory**, open a PR to:
-
-- [ ] Remove `product-seeds/aion-revenue-copilot/` (product code lives in product repo only)
-- [ ] Update `missions/MISSION-002.md` product repo link if needed
-- [ ] Check off **Quality** gate when CI green on product repo
+| Step | Done |
+|------|------|
+| Retire factory `product-seeds/aion-revenue-copilot/` application tree | [x] |
+| Mission 002 points at product repo | [x] |
+| Quality gate reflected when CI green | [x] — see cycle status |
 
 ## Phase 6 — Validation (mission complete)
 
 Not at deploy — after real usage:
 
-- [ ] 5+ real prospect conversations (`docs/VALIDATION.md`)
+- [ ] 5+ real prospect conversations (`docs/VALIDATION.md` in product repo)
 - [ ] CRM + learning events confirmed in ingest logs
 - [ ] CEO validation sign-off → Mission 002 close → Mission 003 unblocked
 

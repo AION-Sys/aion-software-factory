@@ -1,40 +1,37 @@
 # Revenue Copilot — Product Repo Setup
 
-Mission 002 application code lives in **[AION-Sys/Ceoloo-aion-revenue-copilot](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot)**.
+Mission 002 application code lives **only** in:
 
-The factory copy in `product-seeds/aion-revenue-copilot/` is kept in sync until the seed is fully published and removed from this repo.
+**https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot**
+
+The factory no longer carries an application seed for this product. Agents implement features in the product repo; this factory holds mission status, go-live checklists, and cross-repo handoffs.
 
 ## Repository
 
 | Item | Value |
 |------|-------|
 | URL | https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot |
-| Status | Created — seed publish pending |
+| Status | Published — active Builder loop |
 | Default branch | `main` |
+| Vercel | `ceoloo-aion-revenue-copilot` (team `ceoloos-projects`) |
+| Cycle status | [`MISSION_002_CYCLE_STATUS.md`](MISSION_002_CYCLE_STATUS.md) |
+| Go-live | [`REVENUE_COPILOT_GO_LIVE.md`](REVENUE_COPILOT_GO_LIVE.md) |
+| Full-cycle playbook | [`../workflows/PRODUCTION_DEVELOPMENT_CYCLE.md`](../workflows/PRODUCTION_DEVELOPMENT_CYCLE.md) |
 
-## Publish seed (one-time)
-
-If the product repo only has a placeholder README, push the factory seed:
+## Clone and develop
 
 ```bash
-git clone https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot.git /tmp/aion-revenue-copilot
-cd /workspace/product-seeds/aion-revenue-copilot
-npm install && npm run lint && npm run typecheck && npm test && npm run build
-
-# Copy seed into clone (exclude node_modules, .next)
-cp -r . /tmp/aion-revenue-copilot/
-cd /tmp/aion-revenue-copilot
-rm -rf node_modules .next
-git add -A
-git commit -m "feat: bootstrap Mission 002 Revenue Conversion Copilot"
-git push origin main
+git clone https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot.git
+cd Ceoloo-aion-revenue-copilot
+cp .env.example .env.local   # fill secrets locally; never commit
+npm install
+npm run lint && npm run typecheck && npm test && npm run build
+npm run dev
 ```
 
-Or push from a machine with write access to `AION-Sys/Ceoloo-aion-revenue-copilot`.
+## Configure secrets (before production-capable MVP)
 
-## Configure secrets (before production)
-
-In GitHub repo settings → Secrets, and Vercel/Supabase as applicable:
+In GitHub → Settings → Secrets and variables → Actions, and in Vercel project env:
 
 | Secret | Purpose |
 |--------|---------|
@@ -46,22 +43,16 @@ In GitHub repo settings → Secrets, and Vercel/Supabase as applicable:
 | `AION_EVENTS_INGEST_URL` | Learning events |
 | `AION_EVENTS_API_KEY` | Event ingest auth |
 
-## After seed is published
+## What's in the product repo
 
-Delete `product-seeds/aion-revenue-copilot/` from `aion-software-factory` in a follow-up PR so the factory stays governance-only.
-
-## What's in the seed
-
-- Next.js 15 + TypeScript scaffold
-- Supabase schema + RLS migration (Task 1)
-- `lib/{ai,intelligence,sales,learning,crm,db}/` with domain stubs, mappers, and tests
-- `docs/{PRD,ARCHITECTURE,DATA_MODEL,VALIDATION}.md`
+- Next.js + TypeScript sales workspace
+- Supabase schema + RLS migrations
+- Auth (Supabase SSR) + demo rep path for preview
+- Pre-call, during-call, dashboard shell; post-call in flight
+- AI Gateway client, CRM/learning stubs → live wiring tasks
 - CI workflow (lint, typecheck, test, build)
+- Docs: PRD, ARCHITECTURE, DATA_MODEL, VALIDATION
 
-## Go-live checklist
+## Next Builder tasks
 
-Full steps: [`REVENUE_COPILOT_GO_LIVE.md`](REVENUE_COPILOT_GO_LIVE.md)
-
-## Next Builder Tasks
-
-In the **product repo** — see `docs/ARCHITECTURE.md` task table. Task 1 (schema + RLS) is in the seed; next is Task 2 (auth + rep session).
+See product `docs/ARCHITECTURE.md` and [`MISSION_002_CYCLE_STATUS.md`](MISSION_002_CYCLE_STATUS.md). Priority: land Task 6, then Tasks 7–9.
