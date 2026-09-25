@@ -45,5 +45,18 @@ Each role uses templates in `docs/templates/` and follows `docs/workflows/END_TO
 
 Standards: `docs/standards/TESTING.md`, `docs/standards/SECURITY.md`. Product repo layout: `docs/architecture/OVERVIEW.md`. Full-cycle playbook: `docs/workflows/PRODUCTION_DEVELOPMENT_CYCLE.md`.
 
+## Superpowers (session discipline)
+
+AION agents layer [obra/superpowers](https://github.com/obra/superpowers) for **how** to design, plan, implement, and verify inside a coding session. AION remains authoritative for **what** may be built and which gates apply.
+
+| Concern | Source of truth |
+|---------|-----------------|
+| Mission scope, CEO gates, secrets, handoffs | This contract + `AION_ENGINEERING.md` + active mission |
+| Brainstorm → plan → TDD → verify → finish branch | Superpowers skills (Cursor: `/add-plugin superpowers`) |
+| Role ↔ skill map and conflict rules | [`docs/workflows/SUPERPOWERS.md`](docs/workflows/SUPERPOWERS.md) |
+| Always-on bridge | [`.cursor/rules/superpowers-aion-bridge.mdc`](.cursor/rules/superpowers-aion-bridge.mdc), [`.cursor/skills/aion-superpowers-bridge/SKILL.md`](.cursor/skills/aion-superpowers-bridge/SKILL.md) |
+
+**Priority when instructions conflict:** human/CEO → AION constitution/mission/this file → factory workflows/templates → Superpowers skills → defaults. Superpowers must not bypass approval gates or mission out-of-scope items.
+
 ## CEO Escalation
 Escalate when a decision changes product scope, creates material cost, introduces significant security risk, requires irreversible action, or cannot be resolved from repository documentation and the active mission.

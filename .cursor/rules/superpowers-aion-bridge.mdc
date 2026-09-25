@@ -1,0 +1,46 @@
+---
+description: Bridge obra/superpowers session discipline onto AION governance without bypassing gates
+alwaysApply: true
+---
+
+# AION × Superpowers bridge
+
+This factory uses [obra/superpowers](https://github.com/obra/superpowers) as **session process**, layered under AION governance.
+
+## Priority (highest first)
+
+1. Explicit human/CEO instruction for this turn
+2. `AION_ENGINEERING.md`, active `missions/*`, `AGENTS.md`
+3. `docs/workflows/*`, `docs/templates/*`, `docs/standards/*`
+4. Superpowers skills (if the plugin is installed)
+5. Default agent behavior
+
+## Before creative or implementation work
+
+1. Confirm active mission scope and acceptance criteria.
+2. Prefer Superpowers `brainstorming` for new behavior; write outcomes into AION artifacts (mission/PRD/architecture/task), not only chat.
+3. Prefer `writing-plans` / Architect tasks before large code changes.
+4. Prefer `test-driven-development` for logic changes; match depth to `docs/standards/TESTING.md`.
+5. Prefer `verification-before-completion` before any "done / fixed / passing" claim.
+6. Prefer `systematic-debugging` before speculative bugfixes.
+
+## Hard stops Superpowers must not override
+
+- CEO approval gates (mission scope, production deploy, release, validation close)
+- Security review triggers in `docs/workflows/END_TO_END.md`
+- Secrets in git/logs/prompts
+- Out-of-scope mission items
+- Implementing product features in this factory repo (product code lives in product repos)
+
+## Role shortcuts
+
+| Role | Lean on |
+|------|---------|
+| PM | brainstorming → Mission + PRD templates |
+| Architect | brainstorming → writing-plans → ARCHITECTURE + TASK templates |
+| Builder | worktrees → executing-plans/TDD → PR |
+| QA | verification-before-completion → QA_REPORT |
+| Security | template review; systematic-debugging for investigations |
+| Release | verification + release record; never silent prod ship |
+
+Full map: `docs/workflows/SUPERPOWERS.md`. Thin skill: `.cursor/skills/aion-superpowers-bridge/SKILL.md`.

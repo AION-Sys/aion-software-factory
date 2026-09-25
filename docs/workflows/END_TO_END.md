@@ -169,3 +169,19 @@ Every handoff must include:
 - **Parallelize safely:** Architect can draft tasks while PM finalizes edge cases only if mission is `ACTIVE` and scope is frozen.
 - **Don't skip phases:** Shortcuts create rework; QA and Security are cheaper before production.
 - **Default to templates:** Copy from `docs/templates/`; do not rewrite structure per mission.
+- **Session discipline:** Use [Superpowers](SUPERPOWERS.md) skills inside each phase (brainstorm/plan/TDD/verify) without skipping AION gates or templates.
+
+## Superpowers overlay (optional plugin, recommended)
+
+Install in Cursor with `/add-plugin superpowers`. Per-phase skill hints:
+
+| Phase | Suggested Superpowers skills |
+|-------|------------------------------|
+| PM | `brainstorming` |
+| Architect | `brainstorming`, `writing-plans` |
+| Builder | `using-git-worktrees`, `executing-plans` / `subagent-driven-development`, `test-driven-development` |
+| QA | `verification-before-completion`, `requesting-code-review` |
+| Security | template-first; `systematic-debugging` for investigations |
+| Release | `verification-before-completion` (evidence only — CEO gate still required) |
+
+Full mapping and priority stack: [`SUPERPOWERS.md`](SUPERPOWERS.md).

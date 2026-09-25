@@ -32,7 +32,9 @@ This is the companion to [`END_TO_END.md`](END_TO_END.md). Use that doc for role
 ```
 1. Read missions/MISSION-002.md + product docs/ARCHITECTURE.md task row
 2. Branch in product repo → implement one task (small PR)
+   (Superpowers: using-git-worktrees → executing-plans + test-driven-development)
 3. npm run lint && typecheck && test && build
+   (Superpowers: verification-before-completion — fresh evidence before "green")
 4. Open PR (product PR template) → CI + Vercel Preview
 5. AION-QA: acceptance vs task + mission criteria
 6. AION-SECURITY: if auth/secrets/data/integrations touched
@@ -41,6 +43,8 @@ This is the companion to [`END_TO_END.md`](END_TO_END.md). Use that doc for role
 9. If release-bound: AION-RELEASE fills RELEASE_RECORD + CEO gate
 10. After live usage: VALIDATION.md → learning events → mission close
 ```
+
+Session skill map (does not replace gates): [`SUPERPOWERS.md`](SUPERPOWERS.md).
 
 ## Role checklist (full cycle)
 

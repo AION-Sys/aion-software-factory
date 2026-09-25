@@ -27,10 +27,11 @@ The Software Factory is AION's operating system for turning product objectives i
 | `AION_ENGINEERING.md` | Engineering constitution: principles, DoD, approval gates, stack |
 | `AGENTS.md` | Agent operating contract and role definitions |
 | `missions/` | Scoped work units with acceptance criteria and CEO gates |
-| `docs/workflows/` | End-to-end delivery process |
+| `docs/workflows/` | End-to-end delivery process (+ Superpowers session overlay) |
 | `docs/standards/` | Testing, security, and quality baselines |
 | `docs/templates/` | Repeatable artifacts for PM, Architect, Builder, QA, Security |
 | `docs/architecture/` | Factory and cross-repo architectural guidance |
+| `.cursor/rules/`, `.cursor/skills/` | Cursor bridge: AION gates + Superpowers discipline |
 
 ## Agent Roles and Artifacts
 
