@@ -58,3 +58,7 @@ QA confirms:
 - **Builder:** Writes and maintains tests for changed code.
 - **QA:** Validates criteria coverage; does not substitute for missing automated tests on critical paths.
 - **Architect:** Specifies which layers are required per task.
+
+## Superpowers alignment
+
+When the Superpowers plugin is available, Builders should follow `test-driven-development` (red → green → refactor) for logic changes, and `verification-before-completion` before claiming suites pass. Risk-matched depth in this document still governs how much coverage is required — TDD does not mandate 100% UI boilerplate coverage. See [`docs/workflows/SUPERPOWERS.md`](../workflows/SUPERPOWERS.md).

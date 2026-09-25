@@ -15,15 +15,18 @@ The operating foundation for AION's agent-driven software development: missions,
 ```
 aion-software-factory/
 ├── AION_ENGINEERING.md      # Engineering constitution
-├── AGENTS.md                # Agent operating contract
+├── AGENTS.md                # Agent operating contract (+ Superpowers bridge)
 ├── missions/                # Scoped work with acceptance criteria
 ├── docs/
 │   ├── architecture/        # Factory & product-repo conventions
-│   ├── workflows/           # End-to-end + production development cycle
+│   ├── workflows/           # End-to-end, production cycle, Superpowers overlay
 │   ├── standards/           # Testing & security baselines
 │   ├── products/            # Mission 002 status, setup, go-live
 │   ├── handoffs/            # Cross-repo apply packages
 │   └── templates/           # Mission, PRD, architecture, QA, security, release
+├── .cursor/
+│   ├── rules/               # Always-on agent rules (incl. Superpowers bridge)
+│   └── skills/              # Thin AION skills (bridge to Superpowers)
 ├── product-seeds/           # Retired stubs after product repos publish
 └── .github/                 # PR and issue templates
 ```
@@ -50,6 +53,10 @@ This repo defines **how** AION builds. Application code lives in separate produc
 **[MISSION-002 — Revenue Conversion Copilot](missions/MISSION-002.md)** — Active P0.  
 **L1 production development full cycle: READY.** L2 MVP / L3 validation still open.  
 Product repo: [Ceoloo-aion-revenue-copilot](https://github.com/AION-Sys/Ceoloo-aion-revenue-copilot) · Status: [`docs/products/MISSION_002_CYCLE_STATUS.md`](docs/products/MISSION_002_CYCLE_STATUS.md)
+
+## Superpowers (agent session discipline)
+
+Install the [obra/superpowers](https://github.com/obra/superpowers) Cursor plugin (`/add-plugin superpowers`) so agents use brainstorm → plan → TDD → verify skills automatically. AION governance still wins on scope and approval gates. Mapping: [`docs/workflows/SUPERPOWERS.md`](docs/workflows/SUPERPOWERS.md).
 
 ## Competitive Baseline
 
